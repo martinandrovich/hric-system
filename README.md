@@ -21,7 +21,7 @@ Text.
 
 ## Versioning
 
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [releases on this repository](https://github.com/martinandrovich/rb-pro5/releases). Furthermore, this [changelog](https://github.com/martinandrovich/rb-pro5/blob/master/CHANGELOG.md) documents the most relevant changes.
+We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [releases on this repository](https://github.com/HRC-FC/hrc-system/releases). Furthermore, this [changelog](CHANGELOG.md) documents the most relevant changes.
 
 ## License
 
