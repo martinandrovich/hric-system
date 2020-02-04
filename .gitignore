@@ -1,0 +1,13 @@
+# CMake build paths
+build/
+CMakeFiles/
+
+# VSCode folders
+.vscode/
+
+# executables
+/bin/
+*.o
+*.out
+*.exe
+assets/csvfiles/show.m
