@@ -1,6 +1,20 @@
-# hric-system
+# HRIC System
+Human-Robot Interaction and Collaboration System.
 
-Main code repository of the Human-Robot Interaction and Collaboration (HRIC) system.
+* [Overview](#overview)
+* [Getting Started](#getting-started)
+	+ [Dependencies](#dependencies)
+	+ [Configuration](#configuration)
+	+ [Installation](#installation)
+	+ [Test](#test)
+	+ [API & Troubleshooting](#api--troubleshooting)
+* [Versioning](#versioning)
+* [License](#license)
+* [Acknowledgments](#acknowledgments)
+
+## Overview
+
+Text.
 
 ![libfranka](https://frankaemika.github.io/docs/_images/libfranka-architecture.png "libfranka schematic overview.")
 
@@ -22,7 +36,7 @@ All necessary documentation for the Franka Emika Panda robot can be found [here]
 
 ### Configuration
 
-Once a clean install of Linux is installed, there are [scripts][sh-dir] available for system configuration and installation of the real-time kernel.
+Once a clean install of Linux is installed, there are [scripts][sh-dir] available for system configuration and installation of the real-time kernel. A [network configuration][franka-net-conf] is necesasry in order to communicate with the robot.
 
 > **NOTICE:**
 > The scripts modify several system parameters; it is recommend to examine the script and uncomment any unnecessary parts.
@@ -39,9 +53,13 @@ Installation of the system/workspace/package.
 
 An [advanced network performance analysis][comm-test] can be performed using the `communication_test` example from `libfranka/build/examples/`. The provided scripts should configure the system such that when running on a RT kernel, the test  should be greater or equal to a success rate of `0.95`.
 
+### API & Troubleshooting
+
+All necessary documentation is available in the [wiki] of this repository.
+
 ## Versioning
 
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [releases on this repository](about:blank). Furthermore, this [changelog](CHANGELOG.md) documents the most relevant changes.
+We use [SemVer][semver] for versioning. For the versions available, see the [releases on this repository][releases]. Furthermore, this [changelog] documents the most relevant changes.
 
 ## License
 
@@ -51,18 +69,23 @@ No license has been decided yet.
 
 - [Erdal Perkel][erdal-git] - integration of Franka Emika Panda into Gazebo
 
+[semver]: http://semver.org/
+[releases]: about:blank
+[changelog]: CHANGELOG.md
+[wiki]: about:blank
+
 [ros]: http://wiki.ros.org/melodic/
 [libfranka]: https://frankaemika.github.io/docs/libfranka.html
 [franka_ros]: https://github.com/frankaemika/franka_ros
 [gazebo]: http://gazebosim.org/
 [opensim]: http://simtk.org/projects/opensim
 [lubuntu]: https://lubuntu.me/
-
+[franka-net-conf]: https://frankaemika.github.io/docs/getting_started.html#setting-up-the-network
 [sh-dir]: /scripts/
+[sysconf-sh]: /scripts/sysconf.bash
 [rt-kernel]: https://index.ros.org/doc/ros2/Tutorials/Building-Realtime-rt_preempt-kernel-for-ROS-2/
-[rt-kernel-sh]: google.com
-[rt-kernel-guide]: google.com
-[sysconf-sh]: google.com
+[rt-kernel-sh]: /scripts/rtkernel.bash
+[rt-kernel-guide]: https://hungpham2511.github.io/setup/install-rtlinux/
 [erdal-ros]: https://erdalpekel.de/?p=55
 [erdal-git]: https://github.com/erdalpekel
 [comm-test]: https://frankaemika.github.io/docs/troubleshooting.html#advanced-network-performance-analysis
