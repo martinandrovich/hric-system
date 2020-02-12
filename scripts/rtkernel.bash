@@ -12,6 +12,7 @@ else
 fi
 
 echo -e "Using following kernel URLs:\nkernel: $kernel_url\npatch:  $patch_url\n"
+read -p "Press [Enter] key to continue..."
 
 # download kernel and patch
 
