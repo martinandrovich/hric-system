@@ -14,8 +14,6 @@ Human-Robot Interaction and Collaboration System.
 
 ## Overview
 
-Text.
-
 ![libfranka](https://frankaemika.github.io/docs/_images/libfranka-architecture.png "libfranka schematic overview.")
 
 ## Getting Started
@@ -24,7 +22,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Dependencies
 
-The system is running a Ubuntu (`18.04.3 LTS`) distribtuion which is patched with a [real-time kernel][rt-kernel] (`5.4.3rt`). The GDE doesn't really matter, but a lightweight GDE might improve performance, e.g. [LDXE][lubuntu]. The project is compiled using `C++17 GCC`, managed with CMake (`3.10.2`) and built with:
+The system is running a Ubuntu (`18.04.3 LTS`) distribtuion which is patched with a [real-time kernel][rt-kernel] (`5.4.10rt`). The GDE doesn't really matter, but a lightweight GDE might improve performance, e.g. [LDXE][lubuntu]. The project is compiled using `C++17 GCC`, managed with CMake (`3.10.2`) and built with:
 
 * [ROS (1.14.7)][ros] - used as framework for robot operation
 * [libfranka][libfranka] - C++ interface for Franka Control Interface
@@ -39,9 +37,12 @@ All necessary documentation for the Franka Emika Panda robot can be found [here]
 Once a clean install of Linux is installed, there are [scripts][sh-dir] available for system configuration and installation of the real-time kernel. A [network configuration][franka-net-conf] is necesasry in order to communicate with the robot.
 
 > **NOTICE:**
-> The scripts modify several system parameters; it is recommend to examine the script and uncomment any unnecessary parts.
+> The scripts modify several system parameters; it is recommend to examine the script and comment out any unnecessary parts.
 
 The [`sysconf.bash`][sysconf-sh] script installs essential packages, necessary libraries (`ros-melodic`, `libfranka`, `franka_ros`) etc. It creates a `catkin` workspace, configures the network for robot connection and modifies system parameters (deletes packages / disables daemons) to optimize the system performance.
+
+> **NOTICE:**
+> The RT-kernel does NOT support NVIDIA driver binaries; the default nouveau drivers might pose some issues.
 
 The [`rtkernel.bash`][rt-kernel-sh] script downloads, configures, compiles, and installs the realtime kernel; the script includes a [guide][rt-kernel-guide] on how to configure the kernel using a graphical interface.
 
