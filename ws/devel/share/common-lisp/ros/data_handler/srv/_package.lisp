@@ -1,0 +1,10 @@
+(cl:defpackage data_handler-srv
+  (:use )
+  (:export
+   "REGISTERHWNODE"
+   "<REGISTERHWNODE-REQUEST>"
+   "REGISTERHWNODE-REQUEST"
+   "<REGISTERHWNODE-RESPONSE>"
+   "REGISTERHWNODE-RESPONSE"
+  ))
+

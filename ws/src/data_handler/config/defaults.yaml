@@ -1,0 +1,9 @@
+queue_size: 1
+topic_ns_in: "in"
+topic_ns_out: "out"
+# register_hw_nodes_service: "register_hw_node"
+service_register_hw_node: "register_hw_nodes"
+sync_freq: 50
+gui_freq: 30
+num_threads: 0
+load_timeout: 5

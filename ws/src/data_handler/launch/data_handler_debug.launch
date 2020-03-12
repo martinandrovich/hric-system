@@ -1,0 +1,10 @@
+<launch>
+
+	<group ns="data_handler">
+
+		<!-- <rosparam file="$(find data_handler)/config/defaults.yaml" /> -->
+		<node pkg="data_handler" name="data_handler" type="data_handler"/>
+		
+	</group>
+
+</launch>

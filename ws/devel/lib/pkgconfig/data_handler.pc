@@ -1,0 +1,8 @@
+prefix=/home/panda2/Desktop/hric/ws/devel
+
+Name: data_handler
+Description: Description of data_handler
+Version: 1.0.0
+Cflags: -I/home/panda2/Desktop/hric/ws/devel/include -I/home/panda2/Desktop/hric/ws/src/data_handler/include
+Libs: -L${prefix}/lib 
+Requires: message_runtime std_msgs

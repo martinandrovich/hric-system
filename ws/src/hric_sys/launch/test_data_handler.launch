@@ -1,0 +1,17 @@
+<launch>
+
+	<group ns="data_handler">
+
+		<rosparam file="$(find data_handler)/config/defaults.yaml" />
+		<node pkg="data_handler" name="data_handler" type="data_handler" output="screen" launch-prefix="gnome-terminal -e"/>
+		
+	</group>
+
+	<group ns="hric_sys">
+
+		<node pkg="hric_sys" name="dh_talker" type="dh_talker" output="screen" launch-prefix="gnome-terminal -e"/>
+		<node pkg="hric_sys" name="dh_listener" type="dh_listener" output="screen" launch-prefix="gnome-terminal -e"/>
+		
+	</group>
+
+</launch>
