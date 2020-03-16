@@ -36,6 +36,15 @@ All necessary documentation for the Franka Emika Panda robot can be found [here]
 
 Once a clean install of Linux is installed, there are [scripts][sh-dir] available for system configuration and installation of the real-time kernel. A [network configuration][franka-net-conf] is necesasry in order to communicate with the robot.
 
+Installation of the system/workspace/package; the following configuration steps are necessary:
+
+1. RT kernel + performance configuration
+2. Installing `ROS`
+3. Installing `libfranka`
+4. Cloning repository (catkin workspace)
+
+Scripts for these steps will be available later.
+
 > **NOTICE:**
 > The scripts modify several system parameters; it is recommend to examine the script and comment out any unnecessary parts.
 
@@ -45,10 +54,6 @@ The [`sysconf.bash`][sysconf-sh] script installs essential packages, necessary l
 > The RT-kernel does NOT support NVIDIA driver binaries; the default nouveau drivers might pose some issues.
 
 The [`rtkernel.bash`][rt-kernel-sh] script downloads, configures, compiles, and installs the realtime kernel; the script includes a [guide][rt-kernel-guide] on how to configure the kernel using a graphical interface.
-
-### Installation
-
-Installation of the system/workspace/package.
 
 ### Test
 
