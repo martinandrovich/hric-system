@@ -1,8 +1,0 @@
-prefix=/home/androvich/Desktop/hric-system/ws/devel
-
-Name: data_handler
-Description: Description of data_handler
-Version: 1.0.0
-Cflags: -I/home/androvich/Desktop/hric-system/ws/devel/include -I/home/androvich/Desktop/hric-system/ws/src/data_handler/include
-Libs: -L${prefix}/lib 
-Requires: message_runtime std_msgs
