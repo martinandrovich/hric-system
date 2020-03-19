@@ -67,14 +67,14 @@ set(data_handler_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("TRUE" STREQUAL "TRUE")
-  set(data_handler_SOURCE_PREFIX /home/panda2/Desktop/hric/ws/src/data_handler)
-  set(data_handler_DEVEL_PREFIX /home/panda2/Desktop/hric/ws/devel)
+  set(data_handler_SOURCE_PREFIX /home/androvich/Desktop/hric-system/ws/src/data_handler)
+  set(data_handler_DEVEL_PREFIX /home/androvich/Desktop/hric-system/ws/devel)
   set(data_handler_INSTALL_PREFIX "")
   set(data_handler_PREFIX ${data_handler_DEVEL_PREFIX})
 else()
   set(data_handler_SOURCE_PREFIX "")
   set(data_handler_DEVEL_PREFIX "")
-  set(data_handler_INSTALL_PREFIX /home/panda2/Desktop/hric/ws/install)
+  set(data_handler_INSTALL_PREFIX /home/androvich/Desktop/hric-system/ws/install)
   set(data_handler_PREFIX ${data_handler_INSTALL_PREFIX})
 endif()
 
@@ -91,9 +91,9 @@ endif()
 # flag project as catkin-based to distinguish if a find_package()-ed project is a catkin project
 set(data_handler_FOUND_CATKIN_PROJECT TRUE)
 
-if(NOT "/home/panda2/Desktop/hric/ws/devel/include;/home/panda2/Desktop/hric/ws/src/data_handler/include " STREQUAL " ")
+if(NOT "/home/androvich/Desktop/hric-system/ws/devel/include;/home/androvich/Desktop/hric-system/ws/src/data_handler/include " STREQUAL " ")
   set(data_handler_INCLUDE_DIRS "")
-  set(_include_dirs "/home/panda2/Desktop/hric/ws/devel/include;/home/panda2/Desktop/hric/ws/src/data_handler/include")
+  set(_include_dirs "/home/androvich/Desktop/hric-system/ws/devel/include;/home/androvich/Desktop/hric-system/ws/src/data_handler/include")
   if(NOT " " STREQUAL " ")
     set(_report "Check the issue tracker '' and consider creating a ticket if the problem has not been reported yet.")
   elseif(NOT "https://github.com/HRIC-FC " STREQUAL " ")
@@ -110,7 +110,7 @@ if(NOT "/home/panda2/Desktop/hric/ws/devel/include;/home/panda2/Desktop/hric/ws/
         message(FATAL_ERROR "Project 'data_handler' specifies '${idir}' as an include dir, which is not found.  It does not exist in '${include}'.  ${_report}")
       endif()
     else()
-      message(FATAL_ERROR "Project 'data_handler' specifies '${idir}' as an include dir, which is not found.  It does neither exist as an absolute directory nor in '/home/panda2/Desktop/hric/ws/src/data_handler/${idir}'.  ${_report}")
+      message(FATAL_ERROR "Project 'data_handler' specifies '${idir}' as an include dir, which is not found.  It does neither exist as an absolute directory nor in '/home/androvich/Desktop/hric-system/ws/src/data_handler/${idir}'.  ${_report}")
     endif()
     _list_append_unique(data_handler_INCLUDE_DIRS ${include})
   endforeach()
@@ -154,7 +154,7 @@ foreach(library ${libraries})
     set(lib_path "")
     set(lib "${library}-NOTFOUND")
     # since the path where the library is found is returned we have to iterate over the paths manually
-    foreach(path /home/panda2/Desktop/hric/ws/devel/lib;/home/panda2/Desktop/hric/ws/devel/lib;/opt/ros/melodic/lib)
+    foreach(path /home/androvich/Desktop/hric-system/ws/devel/lib;/home/androvich/Desktop/hric-system/ws/devel/lib;/opt/ros/melodic/lib)
       find_library(lib ${library}
         PATHS ${path}
         NO_DEFAULT_PATH NO_CMAKE_FIND_ROOT_PATH)

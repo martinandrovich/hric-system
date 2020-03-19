@@ -72,6 +72,22 @@ ros::message_operations::Printer< ::data_handler::GenericData_<ContainerAllocato
 return s;
 }
 
+
+template<typename ContainerAllocator1, typename ContainerAllocator2>
+bool operator==(const ::data_handler::GenericData_<ContainerAllocator1> & lhs, const ::data_handler::GenericData_<ContainerAllocator2> & rhs)
+{
+  return lhs.header == rhs.header &&
+    lhs.data == rhs.data &&
+    lhs.size == rhs.size;
+}
+
+template<typename ContainerAllocator1, typename ContainerAllocator2>
+bool operator!=(const ::data_handler::GenericData_<ContainerAllocator1> & lhs, const ::data_handler::GenericData_<ContainerAllocator2> & rhs)
+{
+  return !(lhs == rhs);
+}
+
+
 } // namespace data_handler
 
 namespace ros
@@ -79,12 +95,6 @@ namespace ros
 namespace message_traits
 {
 
-
-
-// BOOLTRAITS {'IsFixedSize': False, 'IsMessage': True, 'HasHeader': True}
-// {'std_msgs': ['/opt/ros/melodic/share/std_msgs/cmake/../msg'], 'data_handler': ['/home/panda2/Desktop/hric/ws/src/data_handler/msg']}
-
-// !!!!!!!!!!! ['__class__', '__delattr__', '__dict__', '__doc__', '__eq__', '__format__', '__getattribute__', '__hash__', '__init__', '__module__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__', '_parsed_fields', 'constants', 'fields', 'full_name', 'has_header', 'header_present', 'names', 'package', 'parsed_fields', 'short_name', 'text', 'types']
 
 
 

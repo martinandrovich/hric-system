@@ -1,8 +1,8 @@
-prefix=/home/panda2/Desktop/hric/ws/devel
+prefix=/home/androvich/Desktop/hric-system/ws/devel
 
 Name: hric_sys
 Description: Description of hric_sys
 Version: 0.0.0
-Cflags: -I/home/panda2/Desktop/hric/ws/src/hric_sys/include
+Cflags: -I/home/androvich/Desktop/hric-system/ws/src/hric_sys/include
 Libs: -L${prefix}/lib 
 Requires: message_runtime std_msgs

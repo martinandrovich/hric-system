@@ -1,5 +1,15 @@
 #!/bin/bash
 
+# sudo test
+if [ "$EUID" -eq 0 ]
+  then echo "This script should NOT be run as root; run as current user and only enter password when asked."
+  exit
+fi
+
+# information
+echo -e  "\n\e[104mROS-melodic setup script [v1.0.2]\e[49m\n"
+read -p "Press [Enter] key to start..."
+
 # essential packages
 
 echo -e  "\n\e[104mInstalling essential packages...\e[49m\n"
@@ -31,7 +41,8 @@ sudo apt install ros-melodic-desktop-full -y
 # fix anything missing
 sudo apt --fix-broken install -y
 
-# initialize ROS dep
+# install and init ROS dep
+sudo apt install python-rosdep -y
 sudo rosdep init
 rosdep update
 

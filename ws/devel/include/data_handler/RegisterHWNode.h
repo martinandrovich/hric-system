@@ -57,8 +57,8 @@ struct DataType< ::data_handler::RegisterHWNode > {
 };
 
 
-// service_traits::MD5Sum< ::data_handler::RegisterHWNodeRequest> should match 
-// service_traits::MD5Sum< ::data_handler::RegisterHWNode > 
+// service_traits::MD5Sum< ::data_handler::RegisterHWNodeRequest> should match
+// service_traits::MD5Sum< ::data_handler::RegisterHWNode >
 template<>
 struct MD5Sum< ::data_handler::RegisterHWNodeRequest>
 {
@@ -72,8 +72,8 @@ struct MD5Sum< ::data_handler::RegisterHWNodeRequest>
   }
 };
 
-// service_traits::DataType< ::data_handler::RegisterHWNodeRequest> should match 
-// service_traits::DataType< ::data_handler::RegisterHWNode > 
+// service_traits::DataType< ::data_handler::RegisterHWNodeRequest> should match
+// service_traits::DataType< ::data_handler::RegisterHWNode >
 template<>
 struct DataType< ::data_handler::RegisterHWNodeRequest>
 {
@@ -87,8 +87,8 @@ struct DataType< ::data_handler::RegisterHWNodeRequest>
   }
 };
 
-// service_traits::MD5Sum< ::data_handler::RegisterHWNodeResponse> should match 
-// service_traits::MD5Sum< ::data_handler::RegisterHWNode > 
+// service_traits::MD5Sum< ::data_handler::RegisterHWNodeResponse> should match
+// service_traits::MD5Sum< ::data_handler::RegisterHWNode >
 template<>
 struct MD5Sum< ::data_handler::RegisterHWNodeResponse>
 {
@@ -102,8 +102,8 @@ struct MD5Sum< ::data_handler::RegisterHWNodeResponse>
   }
 };
 
-// service_traits::DataType< ::data_handler::RegisterHWNodeResponse> should match 
-// service_traits::DataType< ::data_handler::RegisterHWNode > 
+// service_traits::DataType< ::data_handler::RegisterHWNodeResponse> should match
+// service_traits::DataType< ::data_handler::RegisterHWNode >
 template<>
 struct DataType< ::data_handler::RegisterHWNodeResponse>
 {
