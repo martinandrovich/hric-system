@@ -19,7 +19,7 @@ main(int argc, char** argv)
 
 	// subscribe
 	hw_node::subscribe<std_msgs::String>(&nh, "dh_talker", &callback);
-
+	
 	// main loop
 	ros::spin();
 
