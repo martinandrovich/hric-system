@@ -20,6 +20,8 @@
   <depend>robot_state_publisher</depend>
   <depend>joint_state_controller</depend>
   <depend>joint_trajectory_controller</depend>
+  <depend>orocos_kdl</depend>
+  <depend>kdl_parser</depend>
 	
   <exec_depend>pluginlib</exec_depend>
 
