@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>franka_gazebo</name>
+  <version>0.1.0</version>
+  <description>Gazebo simulation og Franka Emika Panda using modified URDF model with estimated dynamic parameters.</description>
+  <author>Martin Androvich</author>
+  <maintainer email="marta16@student.sdu.dk">Martin Androvich</maintainer>
+  <license>TODO</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <depend>roscpp</depend>
+  <depend>xacro</depend>
+  <depend>tf</depend>
+  <depend>controller_manager</depend>
+  <depend>effort_controllers</depend>
+  <depend>gazebo_ros</depend>
+  <depend>gazebo_ros_control</depend>
+  <depend>joint_state_publisher</depend>
+  <depend>robot_state_publisher</depend>
+  <depend>joint_state_controller</depend>
+  <depend>joint_trajectory_controller</depend>
+	
+  <exec_depend>pluginlib</exec_depend>
+
+</package>
