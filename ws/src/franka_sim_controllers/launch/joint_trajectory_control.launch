@@ -1,0 +1,9 @@
+<launch>
+
+	<!-- launch gazebo franka panda simulation -->
+	<include file="$(find franka_gazebo)/launch/sim.launch" />
+
+	<!-- node for sending trajectory commands -->
+	<node pkg="franka_sim_controllers" name="joint_trajectory_control" type="joint_trajectory_control" output="screen" launch-prefix="gnome-terminal -e"/>
+
+</launch>
