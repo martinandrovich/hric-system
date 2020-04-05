@@ -52,9 +52,7 @@ include_directories(
 ### talker node
 add_executable(dh_talker src/test_data_handler/dh_talker.cpp)
 target_link_libraries(dh_talker ${catkin_LIBRARIES})
-add_dependencies(dh_talker ${PROJECT_NAME}_generate_messages_cpp)
 
 ### listener node
 add_executable(dh_listener src/test_data_handler/dh_listener.cpp)
 target_link_libraries(dh_listener ${catkin_LIBRARIES})
-add_dependencies(dh_listener ${PROJECT_NAME}_generate_messages_cpp)
