@@ -9,6 +9,7 @@ find_package(
 	catkin REQUIRED
 	COMPONENTS
 	roscpp
+	franka_gazebo
 )
 
 # declare a catkin package
