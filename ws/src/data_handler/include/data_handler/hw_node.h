@@ -4,6 +4,7 @@
 #include <mutex>
 
 #include <ros/ros.h>
+
 #include <data_handler/data_handler.h>
 #include <data_handler/GenericData.h>
 #include <data_handler/RegisterHWNode.h>
@@ -93,6 +94,12 @@ public:
 
 		// register at data_handler
 		hw_node::client              = hw_node::nh->serviceClient<data_handler::RegisterHWNode>(DATA_HANDLER_SRV_REGHWN);
+
+		if (not client.waitForExistence())
+		{
+			ROS_ERROR("Data handler did not advertise service.");
+			return false;
+		}
 
 		data_handler::RegisterHWNode srv;
 
