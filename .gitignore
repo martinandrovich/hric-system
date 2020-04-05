@@ -16,6 +16,7 @@ assets/csvfiles/show.m
 devel/
 logs/
 build/
+install/
 bin/
 lib/
 msg_gen/
