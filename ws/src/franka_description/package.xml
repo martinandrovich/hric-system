@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>franka_description</name>
+  <version>0.1.0</version>
+  <description>franka_description contains modified URDF/XACRO files and meshes of Franka Emika robots with estimated dynamic parameters and Gazebo transmissions</description>
+  <author>Franka Emika GmbH</author>
+  <maintainer email="marta16@student.sdu.dk">Martin Androvich</maintainer>
+  <license>TODO</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <depend>xacro</depend>
+
+</package>

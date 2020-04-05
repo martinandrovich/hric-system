@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="panda">
+
+  <!-- robot name -->
+  <xacro:arg name="robot_name" default="panda" />
+
+  <!-- load arm + hand -->
+  <xacro:include filename="$(find franka_description)/robots/panda_arm.xacro" />
+  <!-- <xacro:include filename="$(find franka_description)/robots/panda_hand.xacro" /> -->
+
+  <!-- load gazebo + transmission files -->
+  <xacro:include filename="$(find franka_description)/robots/panda.gazebo.xacro" />
+  <xacro:include filename="$(find franka_description)/robots/panda.transmission.xacro" />
+
+  <!-- spawn robot -->
+  <xacro:panda_arm />
+  <!-- <xacro:panda_hand ns="panda" rpy="0 0 ${-pi/4}" connected_to="panda_link8"/> -->
+  <xacro:panda_gazebo robot_name="$(arg robot_name)" />
+  <xacro:panda_transmission robot_name="$(arg robot_name)" />
+
+</robot>
+
+
