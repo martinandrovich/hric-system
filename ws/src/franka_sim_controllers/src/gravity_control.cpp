@@ -13,7 +13,15 @@
 namespace sim_control
 {
 
-	const std::string CONTROLLER_NAME = "panda_joint_effort_controller";
+	inline const auto CONTROLLER_NAME = std::string("panda_joint_effort_controller");
+	constexpr auto    VEC_INIT_JOINT_POS = std::array<double, 7>{ 0, -0.785, 0, -2.356, 0, 1.571, 0.785 };
+
+	constexpr auto    PID_FREQ = 100;
+	constexpr auto    KP = 10.0;
+	constexpr auto    KD = 1.0;
+	constexpr auto    dt = 1. / PID_FREQ;
+
+	inline double     kp, kd;
 
 	bool
 	start_controller()
@@ -33,6 +41,9 @@ namespace sim_control
 int
 main(int argc, char** argv)
 {
+
+	using namespace sim_control;
+	using namespace franka_gazebo;
 
 	// initialize node
 	ros::init(argc, argv, "gravity_control");
@@ -56,30 +67,44 @@ main(int argc, char** argv)
 
 	// desired torques
 	std_msgs::Float64MultiArray tau_d;
-	tau_d.data.resize(franka_gazebo::dynamics::NUM_JOINTS);
+	tau_d.data.resize(dynamics::NUM_JOINTS);
+
+	// desired position (q)
+	Eigen::VectorXd q_d(7);
+	for (size_t i = 0; i < VEC_INIT_JOINT_POS.size(); ++i)
+		q_d[i] = VEC_INIT_JOINT_POS[i];
 
 	// log info
 	ROS_INFO("[OK] Initialized '%s' node.", ros::this_node::getName().c_str());
 
+	// wait for user input
+	std::cout << "\nPress [ENTER] to start controller...\n";
 	std::cin.get();
 
-	// main loop
-	ros::Rate rate(1); // hz
+	// gravity controller PID loop
+	ros::Rate rate(PID_FREQ); // hz
 	while (ros::ok)
 	{
-		using namespace sim_control;
-		using namespace franka_gazebo;
+		// read PID parameters from ROS parameter server; if fails, set to default values
+		if (not ros::param::get("/gravity_control/pid/kp", kp))
+			kp = KP;
 
-		// read and output actual + desired joint states
-		ROS_WARN("Gravity controller:");
-		
-		if (auto G = dynamics::get_gravity())
+		if (not ros::param::get("/gravity_control/pid/kd", kd))
+			kd = KD;
+
+		// get measurements
+		const auto q    = dynamics::position().data;
+		const auto qdot = dynamics::velocity().data;
+		const auto G    = dynamics::gravity().data;
+
+		// effort command (torque)
+		const auto u = kp * (q_d - q) - kd * qdot + G;
+
+		// construct torque command
+		for (size_t i = 0; i < dynamics::NUM_JOINTS; ++i)
 		{
-			for (size_t i = 0; i < G->data.size(); ++i)
-			{
-				tau_d.data[i] = G->data[i] * 10.0;
-				ROS_INFO("tau_d[%lu]: %f", i, tau_d.data[i]);
-			}
+			tau_d.data[i] = u[i];
+			ROS_INFO("tau_d[%lu]: %f", i, tau_d.data[i]);
 		}
 
 		// publish desired torques
@@ -89,7 +114,11 @@ main(int argc, char** argv)
 		rate.sleep();
 	}
 
+	ROS_WARN("EXITING...");
+
 	// exit
+	spinner.stop();
+	ros::shutdown();
 	ros::waitForShutdown();
 	return 0;
 }

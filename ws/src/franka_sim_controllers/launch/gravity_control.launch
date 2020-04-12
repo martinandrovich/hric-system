@@ -2,6 +2,10 @@
 
 	<!-- launch gazebo franka panda simulation -->
 	<include file="$(find franka_gazebo)/launch/sim.launch" />
+
+	<!-- PID parameters -->
+	<rosparam param="gravity_control/pid/kp">50.0</rosparam>
+	<rosparam param="gravity_control/pid/kd">1.0</rosparam>
 	
 	<!-- node for sending trajectory commands -->
 	<node pkg="franka_sim_controllers" name="gravity_control" type="gravity_control" output="screen" launch-prefix="gnome-terminal -e"/>
