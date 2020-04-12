@@ -29,12 +29,19 @@ public:
 	static void
 	callback_joint_state(const sensor_msgs::JointStateConstPtr& msg);
 
-	static std::optional<KDL::JntArray>
-	get_gravity();
+	static KDL::JntArray
+	position();
+
+	static KDL::JntArray
+	velocity();
+
+	static KDL::JntArray
+	gravity();
 
 	static inline const std::string            ROBOT_NAME        = "panda";
 	static inline const std::string            ROBOT_DESCRIPTION = "/robot_description";
 	static inline constexpr auto               NUM_JOINTS        = 7;
+	static inline constexpr auto               GRAVITY           = 9.80665;
 	static inline const std::string            BASE_LINK         = ROBOT_NAME + "_link0";
 	static inline const std::string            LAST_LINK         = ROBOT_NAME + "_link8";
 

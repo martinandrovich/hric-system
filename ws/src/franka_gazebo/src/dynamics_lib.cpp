@@ -29,8 +29,8 @@ franka_gazebo::dynamics::init()
 	for (size_t n : { 0, 1, 2, 3, 4, 5, 6, 7 })
 		ROS_INFO_STREAM("segment : " << kdl_chain.getSegment(n).getName());
 
-	// initialize KDL solvers
-	kdl_dyn_solver = new KDL::ChainDynParam(kdl_chain, KDL::Vector(0, 0, -9.82));
+	// initialize KDL solver(s)
+	kdl_dyn_solver = new KDL::ChainDynParam(kdl_chain, KDL::Vector(0, 0, -GRAVITY));
 
 	// initialize joint arrays
 	q     = KDL::JntArray(NUM_JOINTS);
@@ -89,7 +89,7 @@ franka_gazebo::dynamics::compute()
 	std::lock_guard lock(mtx_joint_state);
 
 	// load values of q and qdot from joint_state into joint array(s)
-	for (size_t i; i < NUM_JOINTS; ++i)
+	for (size_t i = 0; i < NUM_JOINTS; ++i)
 	{
 		q(i)    = joint_state.position[i];
 		qdot(i) = joint_state.velocity[i];
@@ -99,11 +99,31 @@ franka_gazebo::dynamics::compute()
 	kdl_dyn_solver->JntToGravity(q, G);
 }
 
-std::optional<KDL::JntArray>
-franka_gazebo::dynamics::get_gravity()
+KDL::JntArray
+franka_gazebo::dynamics::position()
 {
 	if (not init_check())
-		return std::nullopt;
+		ROS_WARN("Returning undefined vector.");
+
+	std::lock_guard lock(mtx_joint_state);
+	return q;
+}
+
+KDL::JntArray
+franka_gazebo::dynamics::velocity()
+{
+	if (not init_check())
+		ROS_WARN("Returning undefined vector.");
+
+	std::lock_guard lock(mtx_joint_state);
+	return qdot;
+}
+
+KDL::JntArray
+franka_gazebo::dynamics::gravity()
+{
+	if (not init_check())
+		ROS_WARN("Returning undefined vector.");
 
 	std::lock_guard lock(mtx_joint_state);
 	return G;
