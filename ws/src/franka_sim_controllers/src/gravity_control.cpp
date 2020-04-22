@@ -98,6 +98,8 @@ main(int argc, char** argv)
 		const auto G    = dynamics::gravity().data;
 
 		// effort command (torque)
+		// https://image1.slideserve.com/2483870/pd-position-control-with-gravity-compensation1-l.jpg
+		// https://link.springer.com/chapter/10.1007/1-85233-999-3_9
 		const auto u = kp * (q_d - q) - kd * qdot + G;
 
 		// construct torque command
@@ -118,7 +120,5 @@ main(int argc, char** argv)
 
 	// exit
 	spinner.stop();
-	ros::shutdown();
-	ros::waitForShutdown();
 	return 0;
 }

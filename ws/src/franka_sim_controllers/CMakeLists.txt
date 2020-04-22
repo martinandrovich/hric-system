@@ -10,22 +10,59 @@ find_package(
 	COMPONENTS
 	roscpp
 	franka_gazebo
+	pluginlib
 )
 
 # declare a catkin package
 catkin_package(
-	INCLUDE_DIRS
+	INCLUDE_DIRS include
+	LIBRARIES franka_sim_controllers
+	CATKIN_DEPENDS franka_gazebo
 )
 
 # include dirs
-include_directories(${catkin_INCLUDE_DIRS})
+include_directories(
+	include
+	${catkin_INCLUDE_DIRS}
+)
+
+
 
 ################################################################################################
 
-### sim_control_trajectory
+# nodes
+
+## gravity_control node
 add_executable(gravity_control src/gravity_control.cpp)
 target_link_libraries(gravity_control ${catkin_LIBRARIES})
 
-## sim_control_trajectory
+## joint_trajectory_control node
 add_executable(joint_trajectory_control src/joint_trajectory_control.cpp)
 target_link_libraries(joint_trajectory_control ${catkin_LIBRARIES})
+
+################################################################################################
+
+# libraries
+
+## ...
+add_library(franka_sim_controllers src/joint_position_pd_gravity_controller.cpp)
+target_link_libraries(franka_sim_controllers ${catkin_LIBRARIES})
+
+install(
+	TARGETS franka_sim_controllers
+	ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+	LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+	RUNTIME DESTINATION ${CATKIN_GLOBAL_BIN_DESTINATION}
+)
+
+## install all project namespaced headers (package/include)
+install(
+	DIRECTORY include/${PROJECT_NAME}/
+	DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
+)
+
+## install ros_control plugin
+install(
+	FILES franka_sim_controllers_plugin.xml
+	DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+)

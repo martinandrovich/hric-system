@@ -1,0 +1,39 @@
+<launch>
+
+	<!-- GAZEBO -->
+
+	<!-- locate robot description -->
+	<param name="robot_description" command="$(find xacro)/xacro --inorder $(find franka_description)/robots/panda.urdf.xacro"/>
+
+	<!-- gazebo arguments -->
+	<arg name="paused" default="false"/>
+	<arg name="use_sim_time" default="true"/>
+	<arg name="gui" default="true"/>
+	<arg name="headless" default="false"/>
+	<arg name="debug" default="false"/>
+
+	<!-- launch gazebo (empty world) -->
+	<include file="$(find gazebo_ros)/launch/empty_world.launch">
+		<arg name="debug" value="$(arg debug)"/>
+		<arg name="gui" value="$(arg gui)"/>
+		<arg name="paused" value="$(arg paused)"/>
+		<arg name="use_sim_time" value="$(arg use_sim_time)"/>
+		<arg name="headless" value="$(arg headless)"/>
+	</include>
+
+	<!-- spawn URDF model in gazebo -->
+	<node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-param robot_description -urdf -model panda"/>
+
+	<!-- ROS CONTROL -->
+
+	<!-- load controller configurations -->
+	<rosparam file="$(find franka_sim_controllers)/config/panda_control.yaml" command="load"/>
+
+	<!-- load the controllers -->
+	<node name="spawn_joint_state_controller" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="joint_state_controller" />
+	<node name="spawn_default_controllers" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="panda_pd_controller" />
+
+	<!-- run a robot state publisher to take the joint values and publish them to tf -->
+	<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="true" output="screen" />
+
+</launch>

@@ -1,0 +1,7 @@
+<library path="lib/libfranka_sim_controllers">
+  <class name="franka_sim_controllers/JointPositionPDGravityController" type="franka_sim_controllers::JointPositionPDGravityController" base_class_type="controller_interface::ControllerBase">
+    <description>
+      Joint position control using a PD gravity compensation control loop.
+    </description>
+  </class>
+</library>
