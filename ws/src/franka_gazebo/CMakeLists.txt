@@ -1,13 +1,12 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(franka_gazebo)
 
-## C++17
+# C++17
 set(CMAKE_CXX_STANDARD 17)
 
-## dependencies (catkin packages)
+# dependencies (catkin packages)
 find_package(
 	catkin REQUIRED
-	Eigen3 REQUIRED
 	COMPONENTS
 	roscpp
 	xacro
@@ -24,6 +23,23 @@ find_package(
 	kdl_parser
 )
 
+# Finding Eigen is somewhat complicated because of our need to support Ubuntu
+# all the way back to saucy.  First we look for the Eigen3 cmake module
+# provided by the libeigen3-dev on newer Ubuntu.  If that fails, then we
+# fall-back to the version provided by cmake_modules, which is a stand-in.
+find_package(Eigen3 QUIET)
+if(NOT EIGEN3_FOUND)
+	find_package(cmake_modules REQUIRED)
+	find_package(Eigen REQUIRED)
+	set(EIGEN3_INCLUDE_DIRS ${EIGEN_INCLUDE_DIRS})
+endif()
+
+# Note that eigen 3.2 (on Ubuntu Wily) only provides EIGEN3_INCLUDE_DIR,
+# not EIGEN3_INCLUDE_DIRS, so we have to set the latter from the former.
+if(NOT EIGEN3_INCLUDE_DIRS)
+	set(EIGEN3_INCLUDE_DIRS ${EIGEN3_INCLUDE_DIR})
+endif()
+
 # declare a catkin package
 catkin_package(
 	INCLUDE_DIRS include
@@ -32,7 +48,7 @@ catkin_package(
 	DEPENDS EIGEN3
 )
 
-## include dirs
+# include dirs
 include_directories(
 	include
 	${catkin_INCLUDE_DIRS}
