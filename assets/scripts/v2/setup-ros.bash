@@ -7,22 +7,25 @@ if [ "$EUID" -eq 0 ]
 fi
 
 # information
-echo -e  "\n\e[104mROS-melodic setup script [v1.0.2]\e[49m\n"
-read -p "Press [Enter] key to start..."
+echo -e  "\n\e[104mROS-melodic setup script [v1.1.0]\e[49m\n"
+
+read -p "Install ros-melodic this system? [Y/n] " -n 1 -r
+echo
+if [[ $REPLY =~ ^[Nn]$ ]]; then exit; fi
 
 # essential packages
 
-echo -e  "\n\e[104mInstalling essential packages...\e[49m\n"
+# echo -e  "\n\e[104mInstalling essential packages...\e[49m\n"
 
-pkg_list=( 
-           build-essential cmake git vim
-           net-tools htop cpufrequtils
-           libpoco-dev libeigen3-dev libboost-filesystem-dev
-           python-rosinstall python-rosinstall-generator python-wstool
-         )
+# pkg_list=
+# ( 
+# 	libpoco-dev
+# 	libeigen3-dev
+# 	libboost-filesystem-dev
+# )
 
-sudo apt-get update
-sudo apt-get install -y "${pkg_list[@]}"
+# sudo apt-get update
+# sudo apt-get install -y "${pkg_list[@]}"
 
 # ROS
 
@@ -34,18 +37,25 @@ sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main
 # add keys
 sudo apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
 
-# update and install ROS
+# update package index and install ROS
 sudo apt update
 sudo apt install ros-melodic-desktop-full -y
 
 # fix anything missing
 sudo apt --fix-broken install -y
 
-# install and init ROS dep
-sudo apt install python-rosdep -y
+# environment setup
+grep -qxF 'source /opt/ros/melodic/setup.bash' ~/.bashrc || echo -e '\nsource /opt/ros/melodic/setup.bash' >> ~/.bashrc
+source /opt/ros/melodic/setup.bash
+sudo updatedb
+
+# install and init rosdep
+sudo apt install python-rosdep python-rosinstall python-rosinstall-generator python-wstool build-essential -y
 sudo rosdep init
 rosdep update
 
-# environment setup
-grep -qxF 'source /opt/ros/melodic/setup.bash' ~/.bashrc || echo 'source /opt/ros/melodic/setup.bash' >> ~/.bashrc
-sudo updatedb
+# clean up
+sudo apt clean
+sudo apt autoclean
+
+
