@@ -19,7 +19,7 @@ fi
 # > information
 echo -e  "\n\e[104mros-melodic setup script [v1.1.0]\e[49m\n"
 
-read -p "Install ros-melodic this system? [Y/n] " -n 1 -r
+read -p "Install ros-melodic on this system? [Y/n] " -n 1 -r
 echo
 if [[ $REPLY =~ ^[Nn]$ ]]; then exit; fi
 

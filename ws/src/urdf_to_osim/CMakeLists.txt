@@ -4,7 +4,7 @@ project(urdf_to_osim)
 # C++17
 set(CMAKE_CXX_STANDARD 17)
 
-# Find catkin and any catkin packages
+# find catkin and any catkin packages
 find_package(
 	catkin REQUIRED
 	COMPONENTS
@@ -14,12 +14,9 @@ find_package(
 	kdl_parser
 )
 
-# Find OpenSim
-
-# find dependencies (Opensim)
-# message(${CMAKE_CURRENT_SOURCE_DIR}/cmake)
-# set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
-# find_package(OpenSim REQUIRED)
+# find OpenSim + SimBody
+# list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+find_package(OpenSim REQUIRED)
 
 # Finding Eigen is somewhat complicated because of our need to support Ubuntu
 # all the way back to saucy.  First we look for the Eigen3 cmake module
@@ -42,24 +39,23 @@ endif()
 catkin_package(
 	INCLUDE_DIRS include
 	LIBRARIES lib_urdf_to_osim
-	DEPENDS EIGEN3
+	DEPENDS EIGEN3 OpenSim
 )
 
 # include dirs
 include_directories(
 	include
-	"/home/androvich/opensim-core/"
 	${catkin_INCLUDE_DIRS}
+	SYSTEM ${OpenSim_INCLUDE_DIRS}
 	SYSTEM ${EIGEN3_INCLUDE_DIRS}
 )
-
 ################################################################################################
 
 # libraries
 
 ## ...
 add_library(lib_urdf_to_osim src/urdf_to_osim.cpp)
-target_link_libraries(lib_urdf_to_osim ${catkin_LIBRARIES})
+target_link_libraries(lib_urdf_to_osim ${catkin_LIBRARIES} ${OpenSim_LIBRARIES})
 
 install(
 	TARGETS lib_urdf_to_osim
@@ -80,4 +76,4 @@ install(
 
 ## test app
 add_executable(urdf_to_osim src/urdf_to_osim.cpp)
-target_link_libraries(urdf_to_osim ${catkin_LIBRARIES} lib_urdf_to_osim)
+target_link_libraries(urdf_to_osim ${catkin_LIBRARIES} lib_urdf_to_osim ${OpenSim_LIBRARIES})

@@ -1,10 +1,14 @@
 #include "urdf_to_osim/urdf_to_osim.h"
 
+#include <OpenSim/OpenSim.h>
+
 bool
 urdf_to_osim(const std::string& path_to_urdf)
 {
 	ROS_INFO("Constructing KDL Tree from URDF model (%s).", path_to_urdf.c_str());
 
+	OpenSim::Model model;
+	
 	// create KDL tree from URDF model
 	KDL::Tree kdl_tree;
 	if (not kdl_parser::treeFromFile(path_to_urdf, kdl_tree))
