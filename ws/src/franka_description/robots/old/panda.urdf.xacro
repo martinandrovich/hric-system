@@ -14,6 +14,7 @@
 
   <!-- spawn robot -->
   <xacro:panda_arm />
+  <!-- <xacro:panda_hand ns="panda" rpy="0 0 ${-pi/4}" connected_to="panda_link8"/> -->
   <xacro:panda_gazebo robot_name="$(arg robot_name)" />
   <xacro:panda_transmission robot_name="$(arg robot_name)" />
 
