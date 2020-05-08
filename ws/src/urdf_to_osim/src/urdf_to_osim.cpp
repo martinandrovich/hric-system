@@ -18,12 +18,13 @@ urdf_to_osim(const std::string& path_to_urdf)
 	}
 
 	// testing
-	auto kdl_segments = kdl_tree.getSegments();
-	for (const auto [name, element] : kdl_segments)
+	for (const auto [name, element] : kdl_tree.getSegments())
 		std::cout << name << " [" << element.q_nr << "]: " << element.segment.getInertia().getMass() << " kg\n";
 
 	// convert KDL tree to OSIM model
 	;
+
+	return true;
 }
 
 // ----------------------------------------------------------------------------------------------

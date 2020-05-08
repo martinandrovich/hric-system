@@ -41,6 +41,7 @@ franka_gazebo::dynamics::init()
 	// done
 	is_sys_init = true;
 	ROS_INFO("[OK] Initialized Franka Panda dynamics library.");
+	return true;
 }
 
 void

@@ -7,6 +7,7 @@
   <!--: Minimum safety distance [m] by which the collision volumes are expanded and which is enforced during robot motions -->
   <!-- arm_id: Namespace of the panda arm. Serves to differentiate between arms in case of multiple instances. -->
   <!-- <xacro:include filename="$(find franka_description)/robots/panda_hand.xacro" /> -->
+  <!-- ??? -->
   <!-- fix the robot to the Gazebo world coordinate system  -->
   <link name="world"/>
   <joint name="robot_to_world" type="fixed">

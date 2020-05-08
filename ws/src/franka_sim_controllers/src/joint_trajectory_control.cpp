@@ -65,7 +65,7 @@ main(int argc, char** argv)
 	spinner.start();
 
 	// wait (block) for callback to be called
-	while (ros::ok && not sim_control::callback_called)
+	while (ros::ok() && not sim_control::callback_called)
 		;
 
 	// log info
@@ -94,7 +94,7 @@ main(int argc, char** argv)
 
 	// main loop
 	ros::Rate rate(1); // hz
-	while (ros::ok)
+	while (ros::ok())
 	{
 		using namespace sim_control;
 

@@ -4,7 +4,17 @@
   <!--: Minimum safety distance [m] by which the collision volumes are expanded and which is enforced during robot motions -->
   <!-- arm_id: Namespace of the panda arm. Serves to differentiate between arms in case of multiple instances. -->
 
-  <xacro:macro name="panda_arm" params="arm_id:='panda' package_name:='franka_description' xyz:='0 0 0' rpy:='0 0 0' joint_damping='1.0'">
+  <xacro:macro name="panda_arm" params="arm_id:='panda' package_name:='franka_description' connected_to:='' xyz:='0 0 0' rpy:='0 0 0' joint_damping='1.0'">
+
+    <!-- ??? -->
+
+    <xacro:unless value="${not connected_to}">
+      <joint name="${arm_id}_joint_${connected_to}" type="fixed">
+        <parent link="${connected_to}"/>
+        <child link="${arm_id}_link0"/>
+        <origin rpy="${rpy}" xyz="${xyz}"/>
+      </joint>
+    </xacro:unless>
 
     <!-- fix the robot to the Gazebo world coordinate system  -->
 
