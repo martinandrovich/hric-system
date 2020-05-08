@@ -20,6 +20,8 @@ urdf_to_osim(const std::string& path_to_urdf)
 
 	// convert KDL tree to OSIM model
 	;
+
+	return true;
 }
 
 // ----------------------------------------------------------------------------------------------

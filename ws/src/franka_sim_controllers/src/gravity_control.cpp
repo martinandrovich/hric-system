@@ -83,7 +83,7 @@ main(int argc, char** argv)
 
 	// gravity controller PID loop
 	ros::Rate rate(PID_FREQ); // hz
-	while (ros::ok)
+	while (ros::ok())
 	{
 		// read PID parameters from ROS parameter server; if fails, set to default values
 		if (not ros::param::get("/gravity_control/pid/kp", kp))
