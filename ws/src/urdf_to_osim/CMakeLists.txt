@@ -46,9 +46,10 @@ catkin_package(
 include_directories(
 	include
 	${catkin_INCLUDE_DIRS}
-	SYSTEM ${OpenSim_INCLUDE_DIRS}
-	SYSTEM ${EIGEN3_INCLUDE_DIRS}
+	${OpenSim_INCLUDE_DIRS}
+	${EIGEN3_INCLUDE_DIRS}
 )
+
 ################################################################################################
 
 # libraries
@@ -74,6 +75,11 @@ install(
 
 # nodes
 
-## test app
+## urdf_to_osim executable (rosrun)
 add_executable(urdf_to_osim src/urdf_to_osim.cpp)
 target_link_libraries(urdf_to_osim ${catkin_LIBRARIES} lib_urdf_to_osim ${OpenSim_LIBRARIES})
+
+## osim_example
+add_executable(osim_example src/osim_example.cpp)
+# target_include_directories(urdf_to_osim PRIVATE ${catkin_LIBRARIES} ${OpenSim_INCLUDE_DIRS})
+target_link_libraries(osim_example ${catkin_LIBRARIES} ${OpenSim_LIBRARIES})
