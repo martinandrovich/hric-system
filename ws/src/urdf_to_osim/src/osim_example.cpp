@@ -40,8 +40,8 @@ main(int argc, char** argv)
 
 	// create two links, each with a mass of 1 kg, center of mass at the body's
 	// origin, and moments and products of inertia of zero
-	OpenSim::Body* humerus = new OpenSim::Body("humerus", 1, Vec3(0), Inertia(0));
-	OpenSim::Body* radius  = new OpenSim::Body("radius", 1, Vec3(0), Inertia(0));
+	OpenSim::Body* link_0 = new OpenSim::Body("link_0", 1, Vec3(0), Inertia(0));
+	OpenSim::Body* link_1  = new OpenSim::Body("link_1", 1, Vec3(0), Inertia(0));
 
 	// ----------------------------------------------------------------------------------------------
 
@@ -52,23 +52,23 @@ main(int argc, char** argv)
 	(
 		"shoulder",                          // joint name
 		model.getGround(), Vec3(0), Vec3(0), // parent body, location in parent, orientation in parent
-		*humerus, Vec3(0, 1, 0), Vec3(0)     // child body, location in child, orientation in child
+		*link_0, Vec3(0, 1, 0), Vec3(0)     // child body, location in child, orientation in child
 	);
 
 	// elbow joint
 	OpenSim::PinJoint* elbow = new OpenSim::PinJoint
 	(
 		"elbow",                             // joint name
-		*humerus, Vec3(0), Vec3(0),          // parent body, location in parent, orientation in parent
-		*radius, Vec3(0, 1, 0), Vec3(0)      // child body, location in child, orientation in child
+		*link_0, Vec3(0), Vec3(0),          // parent body, location in parent, orientation in parent
+		*link_1, Vec3(0, 1, 0), Vec3(0)      // child body, location in child, orientation in child
 	);
 
 	// ----------------------------------------------------------------------------------------------
 
 	// add components to model
 
-	model.addBody(humerus);
-	model.addBody(radius);
+	model.addBody(link_0);
+	model.addBody(link_1);
 	model.addJoint(shoulder);
 	model.addJoint(elbow);
 
@@ -81,27 +81,27 @@ main(int argc, char** argv)
 	
     // attach an ellipsoid to a frame located at the center of each body
 
-    PhysicalOffsetFrame* humerusCenter = new PhysicalOffsetFrame(
-        "humerusCenter", *humerus, Transform(Vec3(0, 0.5, 0)));
-    humerus->addComponent(humerusCenter);
-    humerusCenter->attachGeometry(bodyGeometry.clone());
+    PhysicalOffsetFrame* link_0Center = new PhysicalOffsetFrame(
+        "link_0Center", *link_0, Transform(Vec3(0, 0.5, 0)));
+    link_0->addComponent(link_0Center);
+    link_0Center->attachGeometry(bodyGeometry.clone());
 
-    PhysicalOffsetFrame* radiusCenter = new PhysicalOffsetFrame(
-        "radiusCenter", *radius, Transform(Vec3(0, 0.5, 0)));
-    radius->addComponent(radiusCenter);
-    radiusCenter->attachGeometry(bodyGeometry.clone());
+    PhysicalOffsetFrame* link_1Center = new PhysicalOffsetFrame(
+        "link_1Center", *link_1, Transform(Vec3(0, 0.5, 0)));
+    link_1->addComponent(link_1Center);
+    link_1Center->attachGeometry(bodyGeometry.clone());
 
 	// ----------------------------------------------------------------------------------------------
 
-	// finalize the model
+	// // finalize the model
 
-	// configure the model
-	State& state = model.initSystem();
+	// // configure the model
+	// State& state = model.initSystem();
 
-	// fix the shoulder at its default angle and begin with the elbow flexed
-	shoulder->getCoordinate().setLocked(state, true);
-	elbow->getCoordinate().setValue(state, 0.5 * Pi);
-	model.equilibrateMuscles(state);
+	// // fix the shoulder at its default angle and begin with the elbow flexed
+	// shoulder->getCoordinate().setLocked(state, true);
+	// elbow->getCoordinate().setValue(state, 0.5 * Pi);
+	// model.equilibrateMuscles(state);
 
 	// finalize connections
 	model.finalizeConnections();
