@@ -38,7 +38,7 @@ main(int argc, char** argv)
 
 	// ----------------------------------------------------------------------------------------------
 
-	// create two links, each with a mass of 1 kg, center of mass at the body's
+	// create two links, each with a mass of 1 kg, _center of mass at the body's
 	// origin, and moments and products of inertia of zero
 	OpenSim::Body* link_0 = new OpenSim::Body("link_0", 1, Vec3(0), Inertia(0));
 	OpenSim::Body* link_1  = new OpenSim::Body("link_1", 1, Vec3(0), Inertia(0));
@@ -48,18 +48,18 @@ main(int argc, char** argv)
 	// connect the bodies with pin joints. Assume each body is 1 m long
 
 	// shoulder joint
-    OpenSim::PinJoint* shoulder = new OpenSim::PinJoint
+	OpenSim::PinJoint* shoulder = new OpenSim::PinJoint
 	(
 		"shoulder",                          // joint name
 		model.getGround(), Vec3(0), Vec3(0), // parent body, location in parent, orientation in parent
-		*link_0, Vec3(0, 1, 0), Vec3(0)     // child body, location in child, orientation in child
+		*link_0, Vec3(0, 1, 0), Vec3(0)      // child body, location in child, orientation in child
 	);
 
 	// elbow joint
 	OpenSim::PinJoint* elbow = new OpenSim::PinJoint
 	(
 		"elbow",                             // joint name
-		*link_0, Vec3(0), Vec3(0),          // parent body, location in parent, orientation in parent
+		*link_0, Vec3(0), Vec3(0),           // parent body, location in parent, orientation in parent
 		*link_1, Vec3(0, 1, 0), Vec3(0)      // child body, location in child, orientation in child
 	);
 
@@ -74,44 +74,34 @@ main(int argc, char** argv)
 
 	// ----------------------------------------------------------------------------------------------
 
-    // add display geometry
+	// add display geometry
 
-    Ellipsoid bodyGeometry(0.1, 0.5, 0.1);
-    bodyGeometry.setColor(Gray);
+	Ellipsoid bodyGeometry(0.1, 0.5, 0.1);
+	bodyGeometry.setColor(Gray);
 	
-    // attach an ellipsoid to a frame located at the center of each body
+	// attach an ellipsoid to a frame located at the _center of each body
 
-    PhysicalOffsetFrame* link_0Center = new PhysicalOffsetFrame(
-        "link_0Center", *link_0, Transform(Vec3(0, 0.5, 0)));
-    link_0->addComponent(link_0Center);
-    link_0Center->attachGeometry(bodyGeometry.clone());
+	PhysicalOffsetFrame* link_0_center = new PhysicalOffsetFrame(
+		"link_0_center", *link_0, Transform(Vec3(0, 0.5, 0)));
+	link_0->addComponent(link_0_center);
+	link_0_center->attachGeometry(bodyGeometry.clone());
 
-    PhysicalOffsetFrame* link_1Center = new PhysicalOffsetFrame(
-        "link_1Center", *link_1, Transform(Vec3(0, 0.5, 0)));
-    link_1->addComponent(link_1Center);
-    link_1Center->attachGeometry(bodyGeometry.clone());
+	PhysicalOffsetFrame* link_1_center = new PhysicalOffsetFrame(
+		"link_1_center", *link_1, Transform(Vec3(0, 0.5, 0)));
+	link_1->addComponent(link_1_center);
+	link_1_center->attachGeometry(bodyGeometry.clone());
 
 	// ----------------------------------------------------------------------------------------------
-
-	// // finalize the model
-
-	// // configure the model
-	// State& state = model.initSystem();
-
-	// // fix the shoulder at its default angle and begin with the elbow flexed
-	// shoulder->getCoordinate().setLocked(state, true);
-	// elbow->getCoordinate().setValue(state, 0.5 * Pi);
-	// model.equilibrateMuscles(state);
 
 	// finalize connections
 	model.finalizeConnections();
 
-	// ----------------------------------------------------------------------------------------------
-
 	// export model
 	auto path_model = dir_osim + model_name + ".osim";
 	ROS_INFO("Exporting model to: '%s'", path_model.c_str());
-	model.print(path_model.c_str());
+	model.print(path_model);
+	
+	// ----------------------------------------------------------------------------------------------
 
 	// exit
 	return 0;
