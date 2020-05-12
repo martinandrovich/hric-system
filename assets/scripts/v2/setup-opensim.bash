@@ -42,7 +42,7 @@ python_version=3
 
 # download OpenSim
 echo -e "\nDownloading OpenSim source...\n"
-# git clone https://github.com/opensim-org/opensim-core.git $dir_source
+git clone https://github.com/opensim-org/opensim-core.git $dir_source
 
 # build dependecies
 # flags_dep is an array with all options
@@ -80,7 +80,7 @@ echo -e "\nInstalling OpenSim...\n"
 make install
 
 # clean-up
-rm -rf dir_build
-rm -rf dir_source
-rm -rf dir_dep_build
-rm -rf dir_dep_install
+# rm -rf dir_build
+# rm -rf dir_source
+# rm -rf dir_dep_build
+# rm -rf dir_dep_install
