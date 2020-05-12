@@ -9,6 +9,7 @@ find_package(
 	catkin REQUIRED
 	COMPONENTS
 	roscpp
+	roslib
 	xacro
 	orocos_kdl
 	kdl_parser
@@ -16,6 +17,7 @@ find_package(
 
 # find OpenSim + SimBody
 # list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+set(OpenSim_DIR "~/opensim/lib/cmake/OpenSim")
 find_package(OpenSim REQUIRED)
 
 # Finding Eigen is somewhat complicated because of our need to support Ubuntu
@@ -39,6 +41,7 @@ endif()
 catkin_package(
 	INCLUDE_DIRS include
 	LIBRARIES lib_urdf_to_osim
+	CATKIN_DEPENDS roscpp roslib
 	DEPENDS EIGEN3 OpenSim
 )
 
@@ -81,5 +84,8 @@ target_link_libraries(urdf_to_osim ${catkin_LIBRARIES} lib_urdf_to_osim ${OpenSi
 
 ## osim_example
 add_executable(osim_example src/osim_example.cpp)
-# target_include_directories(urdf_to_osim PRIVATE ${catkin_LIBRARIES} ${OpenSim_INCLUDE_DIRS})
 target_link_libraries(osim_example ${catkin_LIBRARIES} ${OpenSim_LIBRARIES})
+
+## osim_franka_example
+add_executable(osim_franka_example src/osim_franka_example.cpp)
+target_link_libraries(osim_franka_example ${catkin_LIBRARIES} ${OpenSim_LIBRARIES})

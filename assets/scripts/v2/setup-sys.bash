@@ -45,7 +45,7 @@ sudo apt install -y "${pkg_list[@]}"
 # etc.
 
 # visual studio code
-sudo snap install code --classic
+#sudo snap install code --classic
 
 # system update
 echo -e "\nUpdating system...\n"
