@@ -49,11 +49,14 @@ main(int argc, char** argv)
 
 	// > joints
 
+	bool fix_orientation = true;
+	auto vec_ground_ori = (fix_orientation) ? Vec3(-M_PI/2, 0, 0) : Vec3(0);
+
 	// world_to_link0 joint
 	OpenSim::WeldJoint* world_to_link0 = new OpenSim::WeldJoint
 	(
 		"world_to_link0",                                 // joint name
-		model.getGround(), Vec3(0), Vec3(-M_PI/2, 0, 0),  // parent body, location in parent, orientation in parent
+		model.getGround(), Vec3(0), vec_ground_ori,       // parent body, location in parent, orientation in parent
 		*link0, Vec3(0, 0, 0), Vec3(0, 0, 0)              // child body, location in child, orientation in child
 	);
 
@@ -85,21 +88,46 @@ main(int argc, char** argv)
 
 	// > display geometry
 
-	// link0 mesh
-	OpenSim::Mesh link0_mesh("meshes/visual/link0.stl");
-	link0->attachGeometry(link0_mesh.clone());
+	// link0 visual
+	OpenSim::Mesh link0_visual("meshes/visual/link0.stl");
+	link0->attachGeometry(link0_visual.clone());
 
-	// link1 mesh
-	OpenSim::Mesh link1_mesh("meshes/visual/link1.stl");
-	link1->attachGeometry(link1_mesh.clone());
+	// link1 visual
+	OpenSim::Mesh link1_visual("meshes/visual/link1.stl");
+	link1->attachGeometry(link1_visual.clone());
 
-	// link2 mesh
-	OpenSim::Mesh link2_mesh("meshes/visual/link2.stl");
-	link2->attachGeometry(link2_mesh.clone());
+	// link2 visual
+	OpenSim::Mesh link2_visual("meshes/visual/link2.stl");
+	link2->attachGeometry(link2_visual.clone());
 
-	// link3 mesh
-	OpenSim::Mesh link3_mesh("meshes/visual/link3.stl");
-	link3->attachGeometry(link3_mesh.clone());
+	// link3 visual
+	OpenSim::Mesh link3_visual("meshes/visual/link3.stl");
+	link3->attachGeometry(link3_visual.clone());
+
+	// ----------------------------------------------------------------------------------------------
+
+	// > contact geometry
+
+	// contact parameters
+	double stiffness = 1E7, dissipation = 0.1, fric_static = 0.6, fric_dynamic = 0.4, viscosity = 0.01;
+	auto contact_params = new OpenSim::HuntCrossleyForce::ContactParameters(stiffness, dissipation, fric_static, fric_dynamic, viscosity);
+
+	// link0 contact mesh/sphere
+	ContactSphere* link0_contact = new ContactSphere(0.15, Vec3(0), *link0, "link0_contact");
+	// ContactMesh* link0_contact = new ContactMesh("meshes/collision/link0.stl", Vec3(0), Vec3(0), *link0, "link0_contact");
+	model.addContactGeometry(link0_contact);
+
+	// link3 contact sphere
+	ContactSphere* link3_contact = new ContactSphere(0.10, Vec3(0), *link3, "link3_contact");
+	// ContactMesh* link3_contact = new ContactMesh("meshes/collision/link3.stl", Vec3(0), Vec3(0), *link3, "link3_contact");
+	model.addContactGeometry(link3_contact);
+
+	// add contact force
+	auto contact_force = new OpenSim::HuntCrossleyForce(contact_params);
+	contact_force->setName("contact_force");
+	contact_force->addGeometry("link0_contact");
+	contact_force->addGeometry("link3_contact");
+	model.addForce(contact_force);
 
 	// ----------------------------------------------------------------------------------------------
 

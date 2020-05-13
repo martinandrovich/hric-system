@@ -14,5 +14,7 @@
   <depend>sensor_msgs</depend>
   <depend>franka_description</depend>
   <depend>xacro</depend>
+  <depend>joint_state_publisher</depend>
+  <depend>joint_state_publisher_gui</depend>
 
 </package>

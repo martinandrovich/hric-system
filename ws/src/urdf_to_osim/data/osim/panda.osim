@@ -302,8 +302,52 @@
 		</ControllerSet>
 		<!--Forces in the model (includes Actuators).-->
 		<ForceSet name="forceset">
-			<objects />
+			<objects>
+				<HuntCrossleyForce name="contact_force">
+					<!--Material properties.-->
+					<HuntCrossleyForce::ContactParametersSet name="contact_parameters">
+						<objects>
+							<HuntCrossleyForce::ContactParameters>
+								<!--Names of geometry objects affected by these parameters.-->
+								<geometry>link0_contact link3_contact</geometry>
+								<stiffness>10000000</stiffness>
+								<dissipation>0.10000000000000001</dissipation>
+								<static_friction>0.59999999999999998</static_friction>
+								<dynamic_friction>0.40000000000000002</dynamic_friction>
+								<viscous_friction>0.01</viscous_friction>
+							</HuntCrossleyForce::ContactParameters>
+						</objects>
+						<groups />
+					</HuntCrossleyForce::ContactParametersSet>
+				</HuntCrossleyForce>
+			</objects>
 			<groups />
 		</ForceSet>
+		<!--Geometry to be used in contact forces.-->
+		<ContactGeometrySet name="contactgeometryset">
+			<objects>
+				<ContactMesh name="link0_contact">
+					<!--Path to a Component that satisfies the Socket 'frame' of type PhysicalFrame (description: The frame to which this geometry is attached.).-->
+					<socket_frame>/bodyset/link0</socket_frame>
+					<!--Location of geometry center in the PhysicalFrame.-->
+					<location>0 0 0</location>
+					<!--Orientation of geometry in the PhysicalFrame (body-fixed XYZ Euler angles).-->
+					<orientation>0 0 0</orientation>
+					<!--Path to mesh geometry file (supports .obj, .stl, .vtp). Mesh should be closed and water-tight.-->
+					<filename>meshes/collision/link0.stl</filename>
+				</ContactMesh>
+				<ContactMesh name="link3_contact">
+					<!--Path to a Component that satisfies the Socket 'frame' of type PhysicalFrame (description: The frame to which this geometry is attached.).-->
+					<socket_frame>/bodyset/link3</socket_frame>
+					<!--Location of geometry center in the PhysicalFrame.-->
+					<location>0 0 0</location>
+					<!--Orientation of geometry in the PhysicalFrame (body-fixed XYZ Euler angles).-->
+					<orientation>0 0 0</orientation>
+					<!--Path to mesh geometry file (supports .obj, .stl, .vtp). Mesh should be closed and water-tight.-->
+					<filename>meshes/collision/link3.stl</filename>
+				</ContactMesh>
+			</objects>
+			<groups />
+		</ContactGeometrySet>
 	</Model>
 </OpenSimDocument>
