@@ -34,7 +34,7 @@
 						</Mesh>
 					</attached_geometry>
 					<!--The mass of the body (kg)-->
-					<mass>2.9199999999999999</mass>
+					<mass>1.9199999999999999</mass>
 					<!--The location (Vec3) of the mass center in the body frame.-->
 					<mass_center>-0.025565999999999998 -2.8799999999999999e-05 0.057332000000000001</mass_center>
 					<!--The elements of the inertia tensor (Vec6) as [Ixx Iyy Izz Ixy Ixz Iyz] measured about the mass_center and not the body origin.-->
@@ -58,11 +58,11 @@
 						</Mesh>
 					</attached_geometry>
 					<!--The mass of the body (kg)-->
-					<mass>2.7400000000000002</mass>
+					<mass>4.9706840000000003</mass>
 					<!--The location (Vec3) of the mass center in the body frame.-->
 					<mass_center>0 -0.032495799999999998 -0.067581799999999997</mass_center>
 					<!--The elements of the inertia tensor (Vec6) as [Ixx Iyy Izz Ixy Ixz Iyz] measured about the mass_center and not the body origin.-->
-					<inertia>0 0 0 0 0 0</inertia>
+					<inertia>0.55112127664972599 0.55430816457306298 0.0090208362227889999 -9.8917025559499994e-05 0.0034012549124999999 0.0173588011543</inertia>
 				</Body>
 				<Body name="link2">
 					<!--The geometry used to display the axes of this Frame.-->
@@ -82,7 +82,7 @@
 						</Mesh>
 					</attached_geometry>
 					<!--The mass of the body (kg)-->
-					<mass>2.7400000000000002</mass>
+					<mass>0.646926</mass>
 					<!--The location (Vec3) of the mass center in the body frame.-->
 					<mass_center>0 -0.068610000000000004 0.0322285</mass_center>
 					<!--The elements of the inertia tensor (Vec6) as [Ixx Iyy Izz Ixy Ixz Iyz] measured about the mass_center and not the body origin.-->
@@ -106,7 +106,7 @@
 						</Mesh>
 					</attached_geometry>
 					<!--The mass of the body (kg)-->
-					<mass>2.3799999999999999</mass>
+					<mass>3.2286039999999998</mass>
 					<!--The location (Vec3) of the mass center in the body frame.-->
 					<mass_center>0.046989299999999998 0.031637400000000003 -0.031704000000000003</mass_center>
 					<!--The elements of the inertia tensor (Vec6) as [Ixx Iyy Izz Ixy Ixz Iyz] measured about the mass_center and not the body origin.-->
@@ -303,23 +303,23 @@
 		<!--Forces in the model (includes Actuators).-->
 		<ForceSet name="forceset">
 			<objects>
-				<HuntCrossleyForce name="contact_force">
+				<ElasticFoundationForce name="contact_force">
 					<!--Material properties.-->
-					<HuntCrossleyForce::ContactParametersSet name="contact_parameters">
+					<ElasticFoundationForce::ContactParametersSet name="contact_parameters">
 						<objects>
-							<HuntCrossleyForce::ContactParameters>
+							<ElasticFoundationForce::ContactParameters>
 								<!--Names of geometry objects affected by these parameters.-->
-								<geometry>link0_contact link3_contact</geometry>
+								<geometry>link0_contact link1_contact link3_contact</geometry>
 								<stiffness>10000000</stiffness>
 								<dissipation>0.10000000000000001</dissipation>
-								<static_friction>0.59999999999999998</static_friction>
-								<dynamic_friction>0.40000000000000002</dynamic_friction>
-								<viscous_friction>0.01</viscous_friction>
-							</HuntCrossleyForce::ContactParameters>
+								<static_friction>1.05</static_friction>
+								<dynamic_friction>1.3999999999999999</dynamic_friction>
+								<viscous_friction>1</viscous_friction>
+							</ElasticFoundationForce::ContactParameters>
 						</objects>
 						<groups />
-					</HuntCrossleyForce::ContactParametersSet>
-				</HuntCrossleyForce>
+					</ElasticFoundationForce::ContactParametersSet>
+				</ElasticFoundationForce>
 			</objects>
 			<groups />
 		</ForceSet>
@@ -336,6 +336,16 @@
 					<!--Path to mesh geometry file (supports .obj, .stl, .vtp). Mesh should be closed and water-tight.-->
 					<filename>meshes/collision/link0.stl</filename>
 				</ContactMesh>
+				<ContactMesh name="link1_contact">
+					<!--Path to a Component that satisfies the Socket 'frame' of type PhysicalFrame (description: The frame to which this geometry is attached.).-->
+					<socket_frame>/bodyset/link1</socket_frame>
+					<!--Location of geometry center in the PhysicalFrame.-->
+					<location>0 0 0</location>
+					<!--Orientation of geometry in the PhysicalFrame (body-fixed XYZ Euler angles).-->
+					<orientation>0 0 0</orientation>
+					<!--Path to mesh geometry file (supports .obj, .stl, .vtp). Mesh should be closed and water-tight.-->
+					<filename>meshes/collision/link1.stl</filename>
+				</ContactMesh>
 				<ContactMesh name="link3_contact">
 					<!--Path to a Component that satisfies the Socket 'frame' of type PhysicalFrame (description: The frame to which this geometry is attached.).-->
 					<socket_frame>/bodyset/link3</socket_frame>
@@ -349,5 +359,15 @@
 			</objects>
 			<groups />
 		</ContactGeometrySet>
+		<!--Additional components in the model.-->
+		<ComponentSet name="componentset">
+			<objects>
+				<CoordinateActuator name="coordinateactuator">
+					<!--Name of the generalized coordinate to which the actuator applies.-->
+					<coordinate>joint0_coord_0</coordinate>
+				</CoordinateActuator>
+			</objects>
+			<groups />
+		</ComponentSet>
 	</Model>
 </OpenSimDocument>
