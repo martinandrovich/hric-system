@@ -43,17 +43,21 @@ echo -e  "\n\e[104mInstalling essential packages...\e[49m\n"
 
 pkg_list=( 
 	build-essential
+	bc
+	ca-certificates
+	fakeroot
 	curl
 	git
 	vim
+	gnupg2
 	libncurses-dev
 	libssl-dev
-	flex
+	lsb-release
+	libelf-dev
 	bison
-	cpufrequtils
+	flex
 )
 
-echo -e "\nInstalling packages...\n"
 sudo apt update
 sudo apt install -y "${pkg_list[@]}"
 
@@ -83,9 +87,8 @@ gzip -cd ../patch-*.patch.gz | patch -p1 --verbose
 # configure
 
 echo -e "\n\e[41mIMPORTANT!\e[49m\n"
-echo -e "Configure the kernel installation to be fully pre-emptive!\n"
-echo -e "Find 'Preemption Model' and set to 'Fully Preemptible Kernel (RT)'\n"
-echo -e "\nMore info: \e[46mhttps://hungpham2511.github.io/setup/install-rtlinux/\e[49m\n"
+echo -e "Configure the kernel installation to be fully pre-emptive!\nFind 'Preemption Model' and set to 'Fully Preemptible Kernel (RT)'\n"
+echo -e "More info: \e[46mhttps://hungpham2511.github.io/setup/install-rtlinux/\e[49m\n"
 
 read -p "Press [Enter] key to start config..."
 
@@ -152,10 +155,12 @@ sudo xset -dpms
 
 # > finish
 
+echo -e  "\n\e[104mCleaning up...\e[49m\n"
+
 # clean-up
 sudo apt autoclean
 sudo apt autoremove
-cd && rm -rf kernel_dir
+cd && rm -rf $kernel_dir
 
 # restart
 read -p "Press [Enter] key to reboot..."
