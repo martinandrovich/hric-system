@@ -297,7 +297,12 @@
 		</JointSet>
 		<!--Controllers that provide the control inputs for Actuators.-->
 		<ControllerSet name="controllerset">
-			<objects />
+			<objects>
+				<PDController name="pd_controller">
+					<!--The list of model actuators that this controller will control.The keyword ALL indicates the controller will control all the actuators in the model-->
+					<actuator_list>joint0_actuator</actuator_list>
+				</PDController>
+			</objects>
 			<groups />
 		</ControllerSet>
 		<!--Forces in the model (includes Actuators).-->
@@ -320,6 +325,12 @@
 						<groups />
 					</ElasticFoundationForce::ContactParametersSet>
 				</ElasticFoundationForce>
+				<CoordinateActuator name="joint0_actuator">
+					<!--Name of the generalized coordinate to which the actuator applies.-->
+					<coordinate>joint0_coord_0</coordinate>
+					<!--The maximum generalized force produced by this actuator.-->
+					<optimal_force>87</optimal_force>
+				</CoordinateActuator>
 			</objects>
 			<groups />
 		</ForceSet>
@@ -359,15 +370,5 @@
 			</objects>
 			<groups />
 		</ContactGeometrySet>
-		<!--Additional components in the model.-->
-		<ComponentSet name="componentset">
-			<objects>
-				<CoordinateActuator name="coordinateactuator">
-					<!--Name of the generalized coordinate to which the actuator applies.-->
-					<coordinate>joint0_coord_0</coordinate>
-				</CoordinateActuator>
-			</objects>
-			<groups />
-		</ComponentSet>
 	</Model>
 </OpenSimDocument>

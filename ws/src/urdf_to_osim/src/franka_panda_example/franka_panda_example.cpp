@@ -9,6 +9,8 @@
 #include <ros/package.h>
 #include <OpenSim/OpenSim.h>
 
+#include "pd_controller/pd_controller.h"
+
 int
 main(int argc, char** argv)
 {
@@ -140,7 +142,11 @@ main(int argc, char** argv)
 	
 	// joint0 actuator
 	auto joint0_actuator = new OpenSim::CoordinateActuator(joint0->getCoordinate().getName());
-	model.addModelComponent(joint0_actuator);
+	joint0_actuator->setName("joint0_actuator");
+	joint0_actuator->setOptimalForce(87.0);
+
+	// model.addModelComponent(joint0_actuator);
+	model.addForce(joint0_actuator);
 
 	// ----------------------------------------------------------------------------------------------
 
@@ -156,10 +162,24 @@ main(int argc, char** argv)
 	model.addJoint(joint1);
 	model.addJoint(joint2);
 
-	// ----------------------------------------------------------------------------------------------
-
 	// finalize connections
 	model.finalizeConnections();
+
+	// ----------------------------------------------------------------------------------------------
+
+	// > controllers
+
+	auto pd_controller = new PDController(10.0, 1.0);
+	pd_controller->setName("pd_controller");
+	pd_controller->setActuators(model.updActuators());
+
+	model.addController(pd_controller);
+
+	// ----------------------------------------------------------------------------------------------
+
+	// init system
+	model.initSystem();
+	model.updCoordinateSet();
 
 	// export model
 	auto path_model = boost::filesystem::current_path().string() + "/" + model_name + ".osim";
