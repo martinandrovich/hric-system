@@ -57,7 +57,7 @@ include_directories(
 
 # libraries
 
-## ...
+## lib_urdf_to_osim
 add_library(lib_urdf_to_osim src/urdf_to_osim.cpp)
 target_link_libraries(lib_urdf_to_osim ${catkin_LIBRARIES} ${OpenSim_LIBRARIES})
 
@@ -67,6 +67,10 @@ install(
 	LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 	RUNTIME DESTINATION ${CATKIN_GLOBAL_BIN_DESTINATION}
 )
+
+# lib_osim_pd_controller
+add_library(lib_osim_pd_controller src/franka_panda_example/pd_controller/pd_controller.cpp)
+target_link_libraries(lib_osim_pd_controller ${catkin_LIBRARIES} ${OpenSim_LIBRARIES})
 
 ## install all project namespaced headers (package/include)
 install(
@@ -84,4 +88,4 @@ target_link_libraries(urdf_to_osim ${catkin_LIBRARIES} lib_urdf_to_osim ${OpenSi
 
 ## franka_panda_example
 add_executable(franka_panda_example src/franka_panda_example/franka_panda_example.cpp)
-target_link_libraries(franka_panda_example ${catkin_LIBRARIES} ${OpenSim_LIBRARIES})
+target_link_libraries(franka_panda_example ${catkin_LIBRARIES} ${OpenSim_LIBRARIES} lib_osim_pd_controller)
