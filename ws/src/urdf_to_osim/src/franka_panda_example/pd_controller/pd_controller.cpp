@@ -4,11 +4,6 @@
 #include <iostream>
 #include <vector>
 
-#include <OpenSim/Actuators/CoordinateActuator.h>
-#include <OpenSim/Simulation/Model/Model.h>
-#include <OpenSim/Simulation/Model/ModelComponent.h>
-#include <simbody/internal/SimbodyMatterSubsystem.h>
-
 void
 PDController::computeControls(const SimTK::State& state, SimTK::Vector& vec_controls) const
 {

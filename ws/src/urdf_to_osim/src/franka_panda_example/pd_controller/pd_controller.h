@@ -1,6 +1,11 @@
 #pragma once
 
 #include <OpenSim/Simulation/Control/Controller.h>
+#include <OpenSim/Actuators/CoordinateActuator.h>
+#include <OpenSim/Simulation/Model/Model.h>
+#include <OpenSim/Simulation/Model/ModelComponent.h>
+
+#include <simbody/internal/SimbodyMatterSubsystem.h>
 
 #ifdef _WIN32
 	#include "osimPluginDLL.h"
