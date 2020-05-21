@@ -11,6 +11,7 @@ find_package(
 	roscpp
 	roslib
 	xacro
+	urdf
 	orocos_kdl
 	kdl_parser
 )
