@@ -33,7 +33,8 @@ main(int argc, char** argv)
 	OpenSim::Body* link0  = new OpenSim::Body("link0", 1.92, Vec3(-0.025566, -2.88e-05, 0.057332), Inertia(0));
 	OpenSim::Body* link1  = new OpenSim::Body("link1", 4.970684, Vec3(0, -0.0324958, -0.0675818), Inertia(0.551121276649726, 0.554308164573063, 0.009020836222789, -9.891702555950000e-05, 0.003401254912500, 0.017358801154300));
 	OpenSim::Body* link2  = new OpenSim::Body("link2", 0.646926, Vec3(0, -0.06861, 0.0322285), Inertia(0));
-	OpenSim::Body* link3  = new OpenSim::Body("link3", 3.228604, Vec3(0.0469893, 0.0316374, -0.031704), Inertia(0));
+	// OpenSim::Body* link3  = new OpenSim::Body("link3", 3.228604, Vec3(0.0469893, 0.0316374, -0.031704), Inertia(0));
+	OpenSim::Body* link3  = new OpenSim::Body("link3", 3.228604, Vec3(0.027518, 0.03912, -0.066502), Inertia(0));
 
 	// ----------------------------------------------------------------------------------------------
 
