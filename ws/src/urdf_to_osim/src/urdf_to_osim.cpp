@@ -165,6 +165,8 @@ urdf_to_osim(const std::string& path_to_urdf, const std::string& dir_osim_output
 	bool fix_orientation = true;
 	auto vec_ground_ori = (fix_orientation) ? Vec3(-M_PI/2, 0, 0) : Vec3(0);
 
+	const OpenSim::PhysicalFrame* body_prev = dynamic_cast<const OpenSim::PhysicalFrame*>(&osim_model.getGround());
+
 	// iterate links of URDF model, constructing necessary OSIM model elements
 	for (const auto& [link_name, link] : urdf_model.links_)
 	{
@@ -180,6 +182,8 @@ urdf_to_osim(const std::string& path_to_urdf, const std::string& dir_osim_output
 		auto link_pos       = Vec3(0);
 		auto link_ori       = Vec3(0);
 
+		std::cout << link->parent_joint->type << std::endl;
+
 		// inertial properties
 		if (const auto I = link->inertial)
 		{	
@@ -193,19 +197,25 @@ urdf_to_osim(const std::string& path_to_urdf, const std::string& dir_osim_output
 		// names
 		auto body_name      = "link" + std::to_string(link_nr);
 		auto joint_name     = "joint" + std::to_string(link_nr - 1);
-		auto actuator_name  = joint_name + "_actuator";
-
-		// auto body_prev = osim_model.getGround();
+		auto actuator_name  = joint_name + "_actuator";		
 
 		// body/link
 		auto body  = new OpenSim::Body(body_name, link_mass, link_cog, link_inertia);
 
-		// joint connecting to previous body/link
+		// get location and orientation in parent
+		if (const auto& origin = &link->parent_joint->parent_to_joint_origin_transform)
+		{
+			double roll, pitch, yaw;
+			origin->rotation.getRPY(roll, pitch, yaw);
+			link_pos = Vec3(origin->position.x, origin->position.y, origin->position.z);
+			link_ori = Vec3(roll, pitch, yaw);
+		}
+
 		auto joint = new OpenSim::PinJoint
 		(
 			joint_name,                                       // joint name
-			osim_model.getGround(), link_pos, link_ori,                   // parent body, location in parent, orientation in parent
-			*body, Vec3(0, 0, 0), Vec3(0, 0, 0) // child body, location in child, orientation in child
+			*body_prev, link_pos, link_ori,                   // parent body, location in parent, orientation in parent
+			*body, Vec3(0, 0, 0), Vec3(0, 0, 0)               // child body, location in child, orientation in child
 		);
 
 		// display geometry
@@ -221,6 +231,9 @@ urdf_to_osim(const std::string& path_to_urdf, const std::string& dir_osim_output
 		osim_model.addBody(body);
 		osim_model.addJoint(joint);
 		osim_model.addForce(actuator);
+
+		// update body_prev for next body
+		body_prev = body;
 		
 		// log information
 		constexpr auto COLW = 8;
