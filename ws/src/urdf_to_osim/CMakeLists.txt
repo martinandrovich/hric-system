@@ -12,8 +12,6 @@ find_package(
 	roslib
 	xacro
 	urdf
-	orocos_kdl
-	kdl_parser
 )
 
 # find OpenSim + SimBody

@@ -19,7 +19,5 @@
 	<depend>roslib</depend>
 	<depend>xacro</depend>
 	<depend>urdf</depend>
-	<depend>orocos_kdl</depend>
-	<depend>kdl_parser</depend>
 
 </package>
