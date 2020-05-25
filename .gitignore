@@ -18,7 +18,6 @@ logs/
 build/
 install/
 bin/
-lib/
 msg_gen/
 srv_gen/
 msg/*Action.msg
