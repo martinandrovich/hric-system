@@ -65,8 +65,8 @@ namespace franka::dynamics
 	Eigen::Matrix7d
 	mass(const Eigen::Vector7d& q);
 
-	Eigen::Matrix7d
-	coriolis(const Eigen::Vector7d& q, const Eigen::Vector7d& qdot);
+	// Eigen::Matrix7d
+	// coriolis(const Eigen::Vector7d& q, const Eigen::Vector7d& qdot);
 
 	Eigen::Vector7d
 	gravity(const Eigen::Vector7d& q);

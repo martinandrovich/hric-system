@@ -14,6 +14,10 @@ find_package(
 	urdf
 )
 
+# find franka_dynamics lib (custom)
+# set(franka_dynamics_INCLUDE_DIR include)
+# set(franka_dynamics_LIBRARIES ${CMAKE_SOURCE_DIR}/lib/franka_dynamics/franka_dynamics.a)
+
 # find OpenSim + SimBody
 # list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 set(OpenSim_DIR "~/opensim/lib/cmake/OpenSim")
@@ -68,8 +72,9 @@ install(
 )
 
 # lib_pd_controller
+set(franka_dynamics_LIBRARIES ${PROJECT_SOURCE_DIR}/lib/franka_dynamics.a)
 add_library(lib_pd_controller src/pd_controller/pd_controller.cpp)
-target_link_libraries(lib_pd_controller ${catkin_LIBRARIES} ${OpenSim_LIBRARIES})
+target_link_libraries(lib_pd_controller ${catkin_LIBRARIES} ${OpenSim_LIBRARIES} ${franka_dynamics_LIBRARIES})
 
 ## install all project namespaced headers (package/include)
 install(
