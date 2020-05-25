@@ -25,7 +25,7 @@ public:
 
 private:
 
-	double kp;
-	double kd;
+	double kp = 50.0;
+	double kd = 1.0; 
 
 };

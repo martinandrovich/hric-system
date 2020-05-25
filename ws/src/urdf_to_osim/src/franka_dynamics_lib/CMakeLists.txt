@@ -28,6 +28,9 @@ set(SOURCES
 # include directories
 include_directories(${CMAKE_SOURCE_DIR}/include ${Eigen3_INCLUDE_DIR})
 
+# allow to link static library with shared library
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+
 # add library
 add_library(${PROJECT_NAME} STATIC ${SOURCES})
 set_target_properties(${PROJECT_NAME} PROPERTIES PREFIX "")
