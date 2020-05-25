@@ -2,12 +2,13 @@
 
 #include <wordexp.h>
 #include <string>
-#include <regex>
+#include <boost/filesystem.hpp>
 
 #include <ros/ros.h>
 #include <urdf/model.h>
-#include <boost/filesystem.hpp>
 #include <OpenSim/OpenSim.h>
+
+#include "pd_controller/pd_controller.h"
 
 auto
 get_link_number(const std::string& str_link)
@@ -150,6 +151,7 @@ urdf_to_osim(const std::string& path_to_urdf, const std::string& dir_osim_output
 	// > OSIM model creation
 
 	ROS_INFO("Creating OSIM model from URDF file...");
+	ROS_WARN("Model generation is based on modified-DH parameters; please ensure URDF file is described as such.");
 
 	using namespace SimTK;
 
@@ -163,8 +165,8 @@ urdf_to_osim(const std::string& path_to_urdf, const std::string& dir_osim_output
 	// iterate links of URDF model, constructing necessary OSIM model elements
 	for (const auto& [link_name, link] : urdf_model.links_)
 	{
-		// skip world link
-		if (link_name == "world")
+		// skip world and end links
+		if (link_name == "world" || link->child_links.size() == 0)
 			continue;
 
 		// get link information from URDF model
@@ -175,6 +177,7 @@ urdf_to_osim(const std::string& path_to_urdf, const std::string& dir_osim_output
 		auto link_inertia   = Inertia(0);
 		auto link_pos       = Vec3(0);
 		auto link_ori       = Vec3(0);
+		auto joint_name     = std::string("");
 		auto joint_type     = link->parent_joint->type;
 
 		// inertial properties
@@ -193,7 +196,6 @@ urdf_to_osim(const std::string& path_to_urdf, const std::string& dir_osim_output
 		osim_model.addBody(body);
 		
 		// joint
-		auto joint_name = "joint" + std::to_string(link_nr - 1);
 		OpenSim::Joint* joint = nullptr;
 
 		// get location and orientation in parent
@@ -210,8 +212,10 @@ urdf_to_osim(const std::string& path_to_urdf, const std::string& dir_osim_output
 		// last link is ignored due to modified DH paramters
 
 		// joints 1 ... n - 1
-		if (link_nr > 0 && link_nr < urdf_model.links_.size())
+		if (joint_type == urdf::Joint::REVOLUTE)
 		{
+			joint_name = "joint" + std::to_string(link_nr - 1);
+
 			joint = new OpenSim::PinJoint
 			(
 				joint_name,                         // joint name
@@ -271,7 +275,7 @@ urdf_to_osim(const std::string& path_to_urdf, const std::string& dir_osim_output
 				  << std::setw(COLW) << "name: "   << link_name << "\n"
 				  << std::setw(COLW) << "nr: "     << link_nr << "\n"
 				  << std::setw(COLW) << "body: "   << body_name << "\n"
-				  << std::setw(COLW) << "joint: "  << joint_name << " [" << joint_type << "]" << "\n"
+				  << std::setw(COLW) << "joint: "  << joint_name << "\n"
 				  << std::setw(COLW) << "mass: "   << link_mass << " [kg]" << "\n"
 				  << std::setw(COLW) << "CoG:\n"   << std::endl << link_cog << "\n\n"
 				  << std::setw(COLW) << "inertia:" << std::endl << link_inertia << "\n"
@@ -285,8 +289,12 @@ urdf_to_osim(const std::string& path_to_urdf, const std::string& dir_osim_output
 	// finalize model
 	osim_model.finalizeConnections();
 
-	// controller (optional)
-	;
+	// PD controller (optional)
+	auto pd_controller = new PDController(10.0, 1.0);
+	pd_controller->setName("pd_controller");
+	pd_controller->setActuators(osim_model.updActuators());
+
+	osim_model.addController(pd_controller);
 
 	// export model
 	auto path_model = dir_osim_output + "/" + urdf_model.getName() + ".osim";
