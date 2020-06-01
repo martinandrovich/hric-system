@@ -179,6 +179,7 @@ urdf_to_osim(const std::string& path_to_urdf, const std::string& dir_osim_output
 		auto link_ori       = Vec3(0);
 		auto joint_name     = std::string("");
 		auto joint_type     = link->parent_joint->type;
+		auto joint_limits   = link->parent_joint->limits;
 
 		// inertial properties
 		if (const auto I = link->inertial)
@@ -225,6 +226,9 @@ urdf_to_osim(const std::string& path_to_urdf, const std::string& dir_osim_output
 
 			// TODO:
 			// add bushing force to simulate joint damping/friction
+
+			// TODO:
+			// add joint limits
 
 		}
 		// ground joint (0)
