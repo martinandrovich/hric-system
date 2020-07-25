@@ -1,6 +1,0 @@
-string name
-string topic
-uint64 hz
-bool use_dynamic_freq
----
-bool success
