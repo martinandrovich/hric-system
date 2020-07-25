@@ -1,0 +1,3 @@
+cartesian_position_controller:
+    type: franka_irl_controllers/CartesianPositionController
+    arm_id: panda
