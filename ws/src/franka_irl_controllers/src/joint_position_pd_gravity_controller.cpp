@@ -10,8 +10,14 @@ JointPositionPDGravityController::init(hardware_interface::RobotHW* robot_hardwa
 	// get effort joint interface
 	effort_joint_interface = robot_hardware->get<hardware_interface::EffortJointInterface>();
 
+	// get arm id
+	if (!node_handle.getParam("arm_id", arm_id))
+	{
+		ROS_ERROR("The arm id was not specified.");
+		return false;
+	}
+
 	// get list of joints (from parameter server)
-	// sim = joints, irl = joint_names
 	if (!node_handle.getParam("joint_names", vec_joint_names))
 	{
 		ROS_ERROR("No joints were specifed.");
@@ -37,6 +43,25 @@ JointPositionPDGravityController::init(hardware_interface::RobotHW* robot_hardwa
 			ROS_ERROR("Error getting joint handles: %s", e.what());
 			return false;
 		}
+	}
+
+	// get franka model interface
+	franka_model_interface = robot_hardware->get<franka_hw::FrankaModelInterface>();
+	if (franka_model_interface == nullptr)
+	{
+		ROS_ERROR_STREAM("Error getting model interface from hardware");
+		return false;
+	}
+
+	// get franka model interface handle
+	try
+	{
+		franka_model_handle = std::make_unique<franka_hw::FrankaModelHandle>(franka_model_interface->getHandle(arm_id + "_model"));
+	}
+	catch (hardware_interface::HardwareInterfaceException& ex)
+	{
+		ROS_ERROR_STREAM("Exception getting model handle from interface: " << ex.what());
+		return false;
 	}
 
 	// subscribe to joint position command
@@ -76,6 +101,9 @@ JointPositionPDGravityController::update(const ros::Time& /*time*/, const ros::D
 	// read joint states
 	const auto q    = get_position();
 	const auto qdot = get_velocity();
+
+	// read joint dynamics
+	const auto g = franka_model_handle->getGravity();
 
 	// compute controller effort
 	Eigen::Vector7d tau_des = kp * (q_d - q) - kd * qdot;

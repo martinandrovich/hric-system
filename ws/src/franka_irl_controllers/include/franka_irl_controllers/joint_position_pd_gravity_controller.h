@@ -14,8 +14,9 @@
 #include <realtime_tools/realtime_buffer.h>
 #include <std_msgs/Float64MultiArray.h>
 
-#include <franka_hw/franka_state_interface.h>
-#include <franka_hw/franka_cartesian_command_interface.h>
+#include <franka_hw/franka_model_interface.h>
+// #include <franka_hw/franka_state_interface.h>
+// #include <franka_hw/franka_cartesian_command_interface.h>
 
 #include <Eigen/Core>
 
@@ -29,7 +30,7 @@ namespace franka_irl_controllers
 {
 class JointPositionPDGravityController final 
 	: public controller_interface::MultiInterfaceController<hardware_interface::EffortJointInterface,
-	                                                        franka_hw::FrankaStateInterface>
+	                                                        franka_hw::FrankaModelInterface>
 {
 
 public:
@@ -52,8 +53,11 @@ public:
 private:
 
 	hardware_interface::EffortJointInterface* effort_joint_interface;
+	franka_hw::FrankaModelInterface* franka_model_interface;
+	std::unique_ptr<franka_hw::FrankaModelHandle> franka_model_handle;
 	
 	size_t num_joints;
+	std::string arm_id;
 	std::vector<hardware_interface::JointHandle> vec_joints;
 	std::vector<std::string> vec_joint_names;
 
