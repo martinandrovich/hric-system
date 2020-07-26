@@ -6,7 +6,7 @@
 	<param name="robot_description" command="$(find xacro)/xacro --inorder $(find franka_description)/robots/panda.urdf.xacro"/>
 
 	<!-- gazebo arguments -->
-	<arg name="paused" default="false"/>
+	<arg name="paused" default="true"/>
 	<arg name="use_sim_time" default="true"/>
 	<arg name="gui" default="true"/>
 	<arg name="headless" default="false"/>
@@ -27,11 +27,11 @@
 	<!-- ROS CONTROL -->
 
 	<!-- load controller configurations -->
-	<rosparam file="$(find franka_sim_controllers)/config/panda_control.yaml" command="load"/>
+	<rosparam file="$(find franka_sim_controllers)/config/franka_sim_controllers.yaml" command="load"/>
 
 	<!-- load the controllers -->
 	<node name="spawn_joint_state_controller" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="joint_state_controller" />
-	<node name="spawn_default_controllers" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="panda_pd_controller" />
+	<node name="spawn_default_controllers" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="joint_position_pd_gravity_controller" />
 
 	<!-- run a robot state publisher to take the joint values and publish them to tf -->
 	<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="true" output="screen" />

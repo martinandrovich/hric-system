@@ -3,12 +3,12 @@ joint_state_controller:
     type: joint_state_controller/JointStateController
     publish_rate: 100
 
-panda_pd_controller:
+joint_position_pd_gravity_controller:
 
     type: franka_sim_controllers/JointPositionPDGravityController
     state_publish_rate: 100
 
-    joints:
+    joint_names:
         - panda_joint1
         - panda_joint2
         - panda_joint3
