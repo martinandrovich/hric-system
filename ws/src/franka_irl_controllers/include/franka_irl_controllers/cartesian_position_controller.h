@@ -5,10 +5,10 @@
 #include <string>
 #include <mutex>
 
-#include <controller_interface/multi_interface_controller.h>
-#include <hardware_interface/robot_hw.h>
-#include <ros/node_handle.h>
 #include <ros/time.h>
+#include <ros/node_handle.h>
+#include <hardware_interface/robot_hw.h>
+#include <controller_interface/multi_interface_controller.h>
 #include <geometry_msgs/Point.h>
 
 #include <franka_hw/franka_state_interface.h>
@@ -33,7 +33,7 @@ public:
 	starting(const ros::Time&) override;
 
 	void
-	update(const ros::Time&, const ros::Duration& period) override;
+	update(const ros::Time& /*time*/, const ros::Duration& period) override;
 
 private:
 

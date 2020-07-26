@@ -1,3 +1,17 @@
 cartesian_position_controller:
+
     type: franka_irl_controllers/CartesianPositionController
     arm_id: panda
+
+joint_position_pd_gravity_controller:
+
+    type: franka_irl_controllers/JointPositionPDGravityController
+    arm_id: panda
+    joint_names:
+        - panda_joint1
+        - panda_joint2
+        - panda_joint3
+        - panda_joint4
+        - panda_joint5
+        - panda_joint6
+        - panda_joint7
