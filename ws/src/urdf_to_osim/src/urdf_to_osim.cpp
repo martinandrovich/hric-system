@@ -263,7 +263,7 @@ urdf_to_osim(const std::string& path_to_urdf, const std::string& dir_osim_output
 			auto actuator_name = joint_name + "_actuator";
 			auto actuator = new OpenSim::CoordinateActuator(joint->getCoordinate().getName());
 			actuator->setName(actuator_name);
-			actuator->setOptimalForce(100.0); // Nm
+			actuator->setOptimalForce(1.0); // Acts as a gain, should be 1.0
 			osim_model.addForce(actuator);
 		}
 
