@@ -95,7 +95,7 @@ JointPositionPDGravityController::update(const ros::Time& /*time*/, const ros::D
 		vec_joints[i].setCommand(tau_des[i]);
 
 	// log data
-	// log_panda_info("test", elapsed_time.toSec(), q, qdot, tau_des, g);
+	log_panda_info("test", elapsed_time.toSec(), q, qdot, tau_des, g);
 }
 
 Eigen::Vector7d
@@ -138,7 +138,7 @@ JointPositionPDGravityController::saturate_rotatum(const Eigen::Vector7d& tau_de
 
 	// save for next iteration and return
 	tau_des_prev = tau_des_sat;
-	return tau_des_prev;
+	return tau_des_sat;
 }
 
 void

@@ -15,7 +15,7 @@
 #include <std_msgs/Float64MultiArray.h>
 
 #include <franka_hw/franka_model_interface.h>
-// #include <franka_hw/franka_state_interface.h>
+#include <franka_hw/franka_state_interface.h>
 // #include <franka_hw/franka_cartesian_command_interface.h>
 
 #include <Eigen/Core>
@@ -30,7 +30,8 @@ namespace franka_irl_controllers
 {
 class JointPositionPDGravityController final 
 	: public controller_interface::MultiInterfaceController<hardware_interface::EffortJointInterface,
-	                                                        franka_hw::FrankaModelInterface>
+	                                                        franka_hw::FrankaModelInterface,
+	                                                        franka_hw::FrankaStateInterface>
 {
 
 public:
@@ -54,7 +55,9 @@ private:
 
 	hardware_interface::EffortJointInterface* effort_joint_interface;
 	franka_hw::FrankaModelInterface* franka_model_interface;
+	franka_hw::FrankaStateInterface* franka_state_interface;
 	std::unique_ptr<franka_hw::FrankaModelHandle> franka_model_handle;
+	std::unique_ptr<franka_hw::FrankaStateHandle> franka_state_handle;
 	
 	size_t num_joints;
 	std::string arm_id;
@@ -64,8 +67,8 @@ private:
 	ros::Subscriber sub_command;
 	realtime_tools::RealtimeBuffer<std::vector<double>> commands_buffer; // desired joint pos
 
-	double kp = 10; // 50
-	double kd =  1; // 10
+	double kp = 10.0;
+	double kd =  5.0;
 
 	ros::Duration elapsed_time;
 	Eigen::VectorXd q_d;
@@ -77,7 +80,7 @@ private:
 	get_velocity();
 
 	Eigen::Vector7d
-	saturate_rotatum(const Eigen::Vector7d& tau_des, const double period = 0.001 /* [s] */);
+	saturate_rotatum(const Eigen::Vector7d& tau_des, const double period = 0.001, const Eigen::Vector7d& tau_des_prev = Eigen::Vector7d::Zero());
 
 	void
 	callback_command(const std_msgs::Float64MultiArrayConstPtr& msg);

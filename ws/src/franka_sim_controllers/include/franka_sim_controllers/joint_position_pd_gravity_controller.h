@@ -48,8 +48,8 @@ private:
 	ros::Subscriber sub_command;
 	ros::Subscriber sub_joint_state;
 
-	double kp = 200;
-	double kd = 50;
+	double kp = 100.0;
+	double kd =  50.0;
 
 	Eigen::VectorXd q_d;
 

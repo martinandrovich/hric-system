@@ -13,21 +13,21 @@ JointPositionPDGravityController::init(hardware_interface::RobotHW* robot_hardwa
 	// get arm id
 	if (!node_handle.getParam("arm_id", arm_id))
 	{
-		ROS_ERROR("The arm id was not specified.");
+		ROS_ERROR("The arm id was not specified");
 		return false;
 	}
 
 	// get list of joints (from parameter server)
 	if (!node_handle.getParam("joint_names", vec_joint_names))
 	{
-		ROS_ERROR("No joints were specifed.");
+		ROS_ERROR("No joints were specifed");
 		return false;
 	}
 
 	// get number of joints; exit if zero
 	if (num_joints = vec_joint_names.size(); num_joints == 0)
 	{
-		ROS_ERROR("Vector of joint names is empty.");
+		ROS_ERROR("Vector of joint names is empty");
 		return false;
 	}
 
@@ -61,6 +61,25 @@ JointPositionPDGravityController::init(hardware_interface::RobotHW* robot_hardwa
 	catch (hardware_interface::HardwareInterfaceException& ex)
 	{
 		ROS_ERROR_STREAM("Exception getting model handle from interface: " << ex.what());
+		return false;
+	}
+
+	// get franka state interface
+	franka_state_interface = robot_hardware->get<franka_hw::FrankaStateInterface>();
+	if (franka_state_interface == nullptr)
+	{
+		ROS_ERROR_STREAM("Error getting state interface from hardware");
+		return false;
+	}
+
+	// get franka state interface handle
+	try
+	{
+		franka_state_handle = std::make_unique<franka_hw::FrankaStateHandle>(franka_state_interface->getHandle(arm_id + "_robot"));
+	}
+	catch (hardware_interface::HardwareInterfaceException& ex)
+	{
+		ROS_ERROR_STREAM("Exception getting state handle from interface: " << ex.what());
 		return false;
 	}
 
@@ -105,12 +124,16 @@ JointPositionPDGravityController::update(const ros::Time& /*time*/, const ros::D
 	// read joint dynamics
 	const auto g = franka_model_handle->getGravity();
 
-	// compute controller effort
+	// read robot state
+	franka::RobotState robot_state = franka_state_handle->getRobotState();
+	Eigen::Map<Eigen::Matrix<double, 7, 1>> tau_J_d(robot_state.tau_J_d.data());
+
+	// compute controller effort (desired torque)
 	Eigen::Vector7d tau_des = kp * (q_d - q) - kd * qdot;
 
-	// saturate rate-of-effort (rotatum)
+	// saturate rate of torque (rotatum)
 	if (SATURATE_ROTATUM)
-		tau_des = saturate_rotatum(tau_des, period.toSec());
+		tau_des = saturate_rotatum(tau_des, period.toSec(), tau_J_d);
 
 	// set desired command on joint handles
 	for (size_t i = 0; i < num_joints; ++i)
@@ -140,24 +163,24 @@ JointPositionPDGravityController::get_velocity()
 }
 
 Eigen::Vector7d
-JointPositionPDGravityController::saturate_rotatum(const Eigen::Vector7d& tau_des, const double period)
+JointPositionPDGravityController::saturate_rotatum(const Eigen::Vector7d& tau_des, const double period, const Eigen::Vector7d& tau_des_prev)
 {
 	// previous desired torque and saturated torque
-	static Eigen::Vector7d tau_des_prev = Eigen::Vector7d::Zero();
+	// static Eigen::Vector7d tau_des_prev = Eigen::Vector7d::Zero();
 	static Eigen::Vector7d tau_des_sat  = Eigen::Vector7d::Zero();
 	
 	// compute saturated torque
 	for (size_t i = 0; i < tau_des_sat.size(); ++i)
 	{
-		// const double diff = tau_des[i] - tau_des_prev[i];
-		// tau_des_sat[i] = tau_des_prev[i] + std::max(std::min(diff, 1.0), -1.0);
-		const double tau_dot = (tau_des[i] - tau_des_prev[i]) / period;
-		tau_des_sat[i] = tau_des_prev[i] + std::max(std::min(tau_dot, TAU_DOT_MAX * period), -(TAU_DOT_MAX * period));
+		const double diff = tau_des[i] - tau_des_prev[i];
+		tau_des_sat[i] = tau_des_prev[i] + std::max(std::min(diff, 1.0), -1.0);
+		// const double tau_dot = (tau_des[i] - tau_des_prev[i]) / period;
+		// tau_des_sat[i] = tau_des_prev[i] + std::max(std::min(tau_dot, TAU_DOT_MAX * period), -(TAU_DOT_MAX * period));
 	}
 
 	// save for next iteration and return
-	tau_des_prev = tau_des_sat;
-	return tau_des_prev;
+	// tau_des_prev = tau_des_sat;
+	return tau_des_sat;
 }
 
 void
