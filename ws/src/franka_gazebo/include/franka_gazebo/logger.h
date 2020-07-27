@@ -3,15 +3,15 @@
 #include <string>
 #include <fstream>
 
-#include <ros/file_log.h>
+#define DEFAULT_DIR_UNIX "/home/panda2/Desktop/hric-system/assets/data"
 
-template<typename T>
+template<typename Tq, typename Tqdot, typename Ttau_des, typename Tg>
 static inline void
-log_panda_info(const std::string& filename, const double time, const T& q, const T& qdot, const T& tau_des, const T& g)
+log_panda_info(const std::string& filename, const double time, const Tq& q, const Tqdot& qdot, const Ttau_des& tau_des, const Tg& g, const std::string& dir = DEFAULT_DIR_UNIX)
 {
 	
 	static std::ofstream file;
-	const static std::string path = "/home/panda2/Desktop/data/" + filename + ".csv";
+	const std::string path = dir + "/" + filename + ".csv";
 
 	if (not file.is_open())
 	{
