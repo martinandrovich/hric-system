@@ -131,28 +131,31 @@ mocap_sampler::data_handler_callback(sFrameOfMocapData* data, void* p_user)
 		return;
 	}
 
-	// handle incoming data
-
-
-	// labeled markers
+	// handle incoming data (markers, rigid bodies, skeletons etc.)
 	
-	ROS_INFO_STREAM("Markers: " << data->nLabeledMarkers);
-	for (size_t i = 0; i < data->nLabeledMarkers; ++i)
+	ROS_WARN_STREAM_ONCE("num markers: " << data->nLabeledMarkers);
+	ROS_WARN_STREAM_ONCE("rigid bodies: " << data->nRigidBodies);
+
+
+	// position of rigid body
+
+	for (size_t i = 0; i < data->nRigidBodies; ++i)
 	{
-		sMarker marker = data->LabeledMarkers[i];
+		static geometry_msgs::Point marker;
+		const auto rigid_body = data->RigidBodies[i];
 
-		// marker of interest for EE tracking
-		if (marker.ID == 1)
-		{
-			static geometry_msgs::Point marker_pos;
+		marker.x = rigid_body.x;
+		marker.y = rigid_body.y;
+		marker.z = rigid_body.z;
 
-			marker_pos.x = marker.x;
-			marker_pos.y = marker.y;
-			marker_pos.z = marker.z;
+		if (pub_marker_pos)
+			pub_marker_pos->publish(marker);
 
-			if (pub_marker_pos)
-				pub_marker_pos->publish(marker_pos);
-		}
+		std::cout << "marker position:\n"
+		          << "x: " << marker.x << "\n"
+		          << "y: " << marker.y << "\n"
+		          << "z: " << marker.z << "\n"
+		          << std::endl;
 	}
 }
 
@@ -180,11 +183,11 @@ main(int argc, char* argv[])
 	mocap_sampler::configure_sampling();
 
 	// async callbacks
-	ros::AsyncSpinner spinner(0);
-	spinner.start();
+	// ros::AsyncSpinner spinner(0);
+	// spinner.start();
 
 	// begin sampling
-	mocap_sampler::send_command("StartRecording");
+	mocap_sampler::send_command("LiveMode");
 
 	// wait for user input
 
