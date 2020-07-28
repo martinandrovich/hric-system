@@ -2,6 +2,7 @@
 #include <pluginlib/class_list_macros.hpp>
 
 #include <franka_gazebo/logger.h>
+#include <franka_dynamics/franka_dynamics.h>
 
 namespace franka_sim_controllers
 {
@@ -81,7 +82,8 @@ JointPositionPDGravityController::update(const ros::Time& /*time*/, const ros::D
 	const auto qdot = get_velocity();
 
 	// compute dynamics
-	const auto g    = franka_gazebo::dynamics::gravity(q);
+	// const auto g    = franka_gazebo::dynamics::gravity(q);
+	const auto g    = franka::dynamics::gravity(q);
 
 	// compute controller effort
 	Eigen::Vector7d tau_des = kp * (q_d - q) - kd * qdot + g;
@@ -90,12 +92,16 @@ JointPositionPDGravityController::update(const ros::Time& /*time*/, const ros::D
 	if (SATURATE_ROTATUM)
 		tau_des = saturate_rotatum(tau_des, period.toSec());
 
+
 	// set desired command on joint handles
 	for (size_t i = 0; i < num_joints; ++i)
+	{
+		tau_des[i] = std::min(tau_des[i], 87.0); // manual saturation for testing
 		vec_joints[i].setCommand(tau_des[i]);
+	}
 
 	// log data
-	log_panda_info("test", elapsed_time.toSec(), q, qdot, tau_des, g);
+	log_panda_info("pd-test-gazebo-nolim-nokdl", elapsed_time.toSec(), q, qdot, tau_des, g);
 }
 
 Eigen::Vector7d

@@ -1,6 +1,8 @@
 #include <franka_irl_controllers/joint_position_pd_gravity_controller.h>
 #include <pluginlib/class_list_macros.hpp>
 
+#include <franka_gazebo/logger.h>
+
 namespace franka_irl_controllers
 {
 
@@ -138,6 +140,9 @@ JointPositionPDGravityController::update(const ros::Time& /*time*/, const ros::D
 	// set desired command on joint handles
 	for (size_t i = 0; i < num_joints; ++i)
 		vec_joints[i].setCommand(tau_des[i]);
+	
+	// log data
+	log_panda_info("pd-test-panda", elapsed_time.toSec(), q, qdot, tau_des, g);
 }
 
 Eigen::Vector7d

@@ -22,7 +22,7 @@ class JointPositionPDGravityController final
 public:
 
 	static inline constexpr auto CONTROLLER_NAME  = "JointPositionPDGravityController";
-	static inline constexpr auto SATURATE_ROTATUM = true;
+	static inline constexpr auto SATURATE_ROTATUM = false;
 	static inline constexpr auto TAU_DOT_MAX      = 1000.;
 
 	std::vector<std::string> vec_joint_names;
@@ -48,8 +48,8 @@ private:
 	ros::Subscriber sub_command;
 	ros::Subscriber sub_joint_state;
 
-	double kp = 100.0;
-	double kd =  50.0;
+	double kp = 50.0;
+	double kd = 10.0;
 
 	Eigen::VectorXd q_d;
 

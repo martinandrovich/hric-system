@@ -25,6 +25,8 @@
 	<depend>eigen</depend>
 	<depend>libfranka</depend>
 
+	<depend>franka_gazebo</depend>
+
 	<exec_depend>franka_control</exec_depend>
 	<exec_depend>franka_description</exec_depend>
 	<exec_depend>message_runtime</exec_depend>

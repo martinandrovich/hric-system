@@ -15,6 +15,7 @@ find_package(
 	franka_hw
 	geometry_msgs
 	orocos_kdl
+	franka_gazebo
 )
 
 # find libfranka
@@ -48,6 +49,7 @@ catkin_package(
 		hardware_interface
 		franka_hw
 		geometry_msgs
+		franka_gazebo
 	DEPENDS
 		Franka
 		orocos_kdl

@@ -26,7 +26,8 @@ include_directories(
 	${catkin_INCLUDE_DIRS}
 )
 
-
+# find franka_dynamics lib (custom)
+set(franka_dynamics_LIBRARIES ${PROJECT_SOURCE_DIR}/lib/franka_dynamics.a)
 
 ################################################################################################
 
@@ -46,7 +47,7 @@ target_link_libraries(joint_trajectory_control ${catkin_LIBRARIES})
 
 ## ...
 add_library(franka_sim_controllers src/joint_position_pd_gravity_controller.cpp)
-target_link_libraries(franka_sim_controllers ${catkin_LIBRARIES})
+target_link_libraries(franka_sim_controllers ${catkin_LIBRARIES} ${franka_dynamics_LIBRARIES})
 
 install(
 	TARGETS franka_sim_controllers
