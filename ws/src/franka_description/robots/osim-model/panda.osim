@@ -588,43 +588,43 @@
 					<!--Name of the generalized coordinate to which the actuator applies.-->
 					<coordinate>joint0_coord_0</coordinate>
 					<!--The maximum generalized force produced by this actuator.-->
-					<optimal_force>100</optimal_force>
+					<!-- <optimal_force>100</optimal_force> -->
 				</CoordinateActuator>
 				<CoordinateActuator name="joint1_actuator">
 					<!--Name of the generalized coordinate to which the actuator applies.-->
 					<coordinate>joint1_coord_0</coordinate>
 					<!--The maximum generalized force produced by this actuator.-->
-					<optimal_force>100</optimal_force>
+					<!-- <optimal_force>100</optimal_force> -->
 				</CoordinateActuator>
 				<CoordinateActuator name="joint2_actuator">
 					<!--Name of the generalized coordinate to which the actuator applies.-->
 					<coordinate>joint2_coord_0</coordinate>
 					<!--The maximum generalized force produced by this actuator.-->
-					<optimal_force>100</optimal_force>
+					<!-- <optimal_force>100</optimal_force> -->
 				</CoordinateActuator>
 				<CoordinateActuator name="joint3_actuator">
 					<!--Name of the generalized coordinate to which the actuator applies.-->
 					<coordinate>joint3_coord_0</coordinate>
 					<!--The maximum generalized force produced by this actuator.-->
-					<optimal_force>100</optimal_force>
+					<!-- <optimal_force>100</optimal_force> -->
 				</CoordinateActuator>
 				<CoordinateActuator name="joint4_actuator">
 					<!--Name of the generalized coordinate to which the actuator applies.-->
 					<coordinate>joint4_coord_0</coordinate>
 					<!--The maximum generalized force produced by this actuator.-->
-					<optimal_force>100</optimal_force>
+					<!-- <optimal_force>100</optimal_force> -->
 				</CoordinateActuator>
 				<CoordinateActuator name="joint5_actuator">
 					<!--Name of the generalized coordinate to which the actuator applies.-->
 					<coordinate>joint5_coord_0</coordinate>
 					<!--The maximum generalized force produced by this actuator.-->
-					<optimal_force>100</optimal_force>
+					<!-- <optimal_force>100</optimal_force> -->
 				</CoordinateActuator>
 				<CoordinateActuator name="joint6_actuator">
 					<!--Name of the generalized coordinate to which the actuator applies.-->
 					<coordinate>joint6_coord_0</coordinate>
 					<!--The maximum generalized force produced by this actuator.-->
-					<optimal_force>100</optimal_force>
+					<!-- <optimal_force>100</optimal_force> -->
 				</CoordinateActuator>
 			</objects>
 			<groups />
