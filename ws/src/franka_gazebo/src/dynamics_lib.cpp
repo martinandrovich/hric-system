@@ -30,13 +30,13 @@ franka_gazebo::dynamics::init()
 		ROS_INFO_STREAM("segment : " << kdl_chain.getSegment(n).getName());
 
 	// initialize KDL solver(s)
-	kdl_dyn_solver = new KDL::ChainDynParam(kdl_chain, KDL::Vector(0, 0, -GRAVITY));
+	kdl_dyn_solver = new KDL::ChainDynParam(kdl_chain, KDL::Vector(0, 0, GRAVITY));
 
 	// initialize joint arrays
 	q     = KDL::JntArray(NUM_JOINTS);
 	qdot  = KDL::JntArray(NUM_JOINTS);
 	qddot = KDL::JntArray(NUM_JOINTS);
-	G     = KDL::JntArray(NUM_JOINTS);
+	g     = KDL::JntArray(NUM_JOINTS);
 
 	// done
 	is_sys_init = true;
@@ -97,7 +97,7 @@ franka_gazebo::dynamics::compute()
 	}
 
 	// compute gravity
-	kdl_dyn_solver->JntToGravity(q, G);
+	kdl_dyn_solver->JntToGravity(q, g);
 }
 
 KDL::JntArray
@@ -127,5 +127,29 @@ franka_gazebo::dynamics::gravity()
 		ROS_WARN("Returning undefined vector.");
 
 	std::lock_guard lock(mtx_joint_state);
-	return G;
+	return g;
+}
+
+Eigen::Vector7d
+franka_gazebo::dynamics::gravity(const Eigen::Vector7d& q)
+{
+	// init check
+	if (not is_sys_init)
+	{
+		ROS_ERROR("franka_gazebo::dynamics::gravity(q): System has yet not been initialized, returning zero vector.");
+		return Eigen::Vector7d::Zero();
+	}
+
+	// internal joint arrays for KDL (so stupid)
+	static KDL::JntArray temp_q = KDL::JntArray(NUM_JOINTS), temp_g = KDL::JntArray(NUM_JOINTS);
+
+	// fill q joint array from Eigen vector
+	for (size_t i = 0; i < q.size(); ++i)
+		temp_q(i) = q[i];
+
+	// compute gravity term
+	kdl_dyn_solver->JntToGravity(temp_q, temp_q);
+
+	// return Eigen vector
+	return temp_g.data;
 }

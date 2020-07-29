@@ -1,0 +1,12 @@
+<library path="lib/libfranka_irl_controllers">
+  <class name="franka_irl_controllers/CartesianPositionController" type="franka_irl_controllers::CartesianPositionController" base_class_type="controller_interface::ControllerBase">
+    <description>
+      Needs a better description than this.
+    </description>
+  </class>
+  <class name="franka_irl_controllers/JointPositionPDGravityController" type="franka_irl_controllers::JointPositionPDGravityController" base_class_type="controller_interface::ControllerBase">
+    <description>
+      Needs a better description than this.
+    </description>
+  </class>
+</library>

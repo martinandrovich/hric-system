@@ -16,6 +16,14 @@
 #include <kdl/chainjnttojacdotsolver.hpp>
 #include <kdl/chainjnttojacsolver.hpp>
 
+#include <Eigen/Core>
+
+namespace Eigen
+{
+	using Matrix7d = Eigen::Matrix<double, 7, 7>;
+	using Vector7d = Eigen::Matrix<double, 7, 1>;
+}
+
 namespace franka_gazebo
 {
 class dynamics
@@ -38,10 +46,13 @@ public:
 	static KDL::JntArray
 	gravity();
 
+	static Eigen::Vector7d
+	gravity(const Eigen::Vector7d& q);
+
 	static inline const std::string            ROBOT_NAME        = "panda";
 	static inline const std::string            ROBOT_DESCRIPTION = "/robot_description";
 	static inline constexpr auto               NUM_JOINTS        = 7;
-	static inline constexpr auto               GRAVITY           = 9.80665;
+	static inline constexpr auto               GRAVITY           = -9.80665;
 	static inline const std::string            BASE_LINK         = ROBOT_NAME + "_link0";
 	static inline const std::string            LAST_LINK         = ROBOT_NAME + "_link8";
 
@@ -64,7 +75,7 @@ private:
 	static inline KDL::JntArray                q;     // position
 	static inline KDL::JntArray                qdot;  // velocity
 	static inline KDL::JntArray                qddot; // acceleration
-	static inline KDL::JntArray                G;     // gravity
+	static inline KDL::JntArray                g;     // gravity
 
 	static inline KDL::Chain                   kdl_chain;
 	static inline KDL::ChainDynParam*          kdl_dyn_solver;
