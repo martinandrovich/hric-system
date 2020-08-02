@@ -1,5 +1,5 @@
 # HRIC System
-> This project is part of a thesis ([source][thesis-pdf]) presented for the degree of BSc in Engineering (Robot Systems) at the University of Southern Denmark (SDU).
+> This project is part of a thesis ([source][thesis-pdf]) presented for the degree of **BSc in Engineering (Robot Systems)** at the **University of Southern Denmark (SDU)**.
 
 For research in safety of Human-Robot Interaction and Collaboration (HRIC), an integrated simulation environment is setup, facilitating the means of real time robot interfacing and collection of sensory data, furthermore providing a generic framework for development and deployment of an arbitrary robot controller in both a simulated and real environment.
 
