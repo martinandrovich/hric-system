@@ -294,7 +294,7 @@ urdf_to_osim(const std::string& path_to_urdf, const std::string& dir_osim_output
 	osim_model.finalizeConnections();
 
 	// PD controller (optional)
-	auto pd_controller = new PDController(10.0, 1.0);
+	auto pd_controller = new PDController(50.0, 10.0);
 	pd_controller->setName("pd_controller");
 	pd_controller->setActuators(osim_model.updActuators());
 
