@@ -1,97 +1,132 @@
 # HRIC System
-Human-Robot Interaction and Collaboration System.
+> This project is part of a thesis ([source][thesis-pdf]) presented for the degree of BSc in Engineering (Robot Systems) at the University of Southern Denmark (SDU).
 
-* [Overview](#overview)
-* [Getting Started](#getting-started)
-	+ [Dependencies](#dependencies)
-	+ [Configuration](#configuration)
-	+ [Installation](#installation)
-	+ [Test](#test)
-	+ [API & Troubleshooting](#api--troubleshooting)
-* [Versioning](#versioning)
-* [License](#license)
-* [Acknowledgments](#acknowledgments)
+For research in safety of Human-Robot Interaction and Collaboration (HRIC), an integrated simulation environment is setup, facilitating the means of real time robot interfacing and collection of sensory data, furthermore providing a generic framework for development and deployment of an arbitrary robot controller in both a simulated and real environment.
+
+![workcell-setup][img-workcell-setup]
+
+Using the workcell in SDU Industry 4.0 lab, equipped with a Franka Emika Panda robot and various perceptual sensory equipment (e.g., motion capture system, EMG sensors etc.), the Robot Operating System (ROS) middleware is used as the underlying framework of the software architecture, in which the development of the generic controller framework is be accommodated by ROS Control and Franka ROS, using Gazebo as the simulation environment.
+
+To analyze human-robot interaction, the robot model is integrated into a biomechanical simulator (OpenSim), automating the transformation of a Unified Robot Description Format (URDF) model to OpenSim Model Format (OSIM).
 
 ## Overview
 
-![libfranka](https://frankaemika.github.io/docs/_images/libfranka-architecture.png "libfranka schematic overview.")
+### Features
 
-## Getting Started
+This reposity contains the `catkin` workspace used for the HRIC system, consisting of various packages.
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
+- `franka_ros` - integration of `libfranka` into `ROS`, enabling robot interfacing via `ros_control` framework.
+- `franka_description` - modified `URDF` robot descriptions with estimated dynamics parameters.
+- `franka_gazebo` - integration of Panda into `Gazebo` along with emulation of joint space robot dynamics.
+- `franka_sim_controllers` - various controllers to be used in the simulated environment.
+- `franka_irl_controller` - various controllers to be used in the real environment.
+- `urdf_to_osim` - automated transformation of URDF model to OSIM model.
+- `mocap_sampler` - sampling of the OptiTrack MOCAP system using NatNet SDK.
 
 ### Dependencies
 
-The system is running a Ubuntu (`18.04.3 LTS`) distribtuion which is patched with a [real-time kernel][rt-kernel] (`5.4.10rt`). The GDE doesn't really matter, but a lightweight GDE might improve performance, e.g. [LDXE][lubuntu]. The project is compiled using `C++17 GCC`, managed with CMake (`3.10.2`) and built with:
+This project heavily relies on the Robot Operating System (ROS) framework accompanied by `libfranka` and `franka_ros` for real time robot interfacing. The system is running a Ubuntu (`18.04.3 LTS`) distribtuion which is patched with a [real-time kernel][rt-kernel] (`5.4.10rt`). The GDE doesn't really matter, but a lightweight GDE might improve performance, e.g. [LDXE][lubuntu]. The project is compiled using `C++17 GCC`, managed with `catkin` build system, CMake (`2.8.3`) and `rosdep` for dependecny managements, built with:
 
-* [ROS (1.14.7)][ros] - used as framework for robot operation
-* [libfranka][libfranka] - C++ interface for Franka Control Interface
-* [franka_ros][franka_ros] - metapackage that integrates libfranka into ROS and ROS control.
-* [Gazebo][gazebo] - used as robot simulation environment
-* [OpenSim][opensim] - used as simulation environment
+- [`ROS`][ros] - robotics middleware.
+- [`libfranka`][libfranka] - C++ interface for Franka Control Interface.
+- [`franka_ros`][franka-ros] - metapackage that integrates libfranka into ROS and ROS control.
+- [`Gazebo`][gazebo] - robot simulation environment.
+- [`OpenSim 4.1`][opensim] - biomechanical simulation environment.
+- [`KDL`][kdl] - rigid-body dynamics library.
+- [`Eigen3`][eigen3] - high-level `C++` library for linear algebra etc.
+- [`NatNet`][natnet] - SDK for interfacting OptiTrack Motive.
 
-All necessary documentation for the Franka Emika Panda robot can be found [here](https://frankaemika.github.io/docs/). A [modified version][erdal-ros] of `franka_ros` is installed, enabling simulation of the robot by integrating the FRANKA EMIKA Panda robot into Gazebo.
+All necessary documentation for the Franka Emika Panda robot and the FCI (`libfranka`, `franka_ros` etc.) can be found [here][franka-docs]. The OpenSim controller are compileable on Linux, but are only useful when compiled on Windows (yeah, that sucks) and used with the OpenSim GUI.
 
-### Configuration
+---
 
-Once a clean install of Linux is installed, there are [scripts][sh-dir] available for system configuration and installation of the real-time kernel. A [network configuration][franka-net-conf] is necesasry in order to communicate with the robot.
+## Getting started
 
-Installation of the system/workspace/package; the following configuration steps are necessary:
+It is recommended to install the system on a dedicated workstation computer, directly connected to the Panda robot(s) and any measurements devices; a network switch is permissable but not advisable.
 
-1. RT kernel + performance configuration
+### Installation
+
+The installation is comprised of the following steps:
+
+1. Installing Ubuntu (`18.04.3 LTS`)
 2. Installing `ROS`
-3. Installing `libfranka`
-4. Cloning repository (catkin workspace)
+3. Pathcing real time kernel and configuring performance parameters
+4. Installing `libfranka` and `franka_ros`
+5. Cloning repository (installing `catkin` workspace)
+6. Installing dependecies using scripts and `rosdep`
 
-Scripts for these steps will be available later.
+After a clean install of Ubuntu, there are [bash scripts][script-dir] available for system configuration and installation of the real time kernel. A [network configuration][franka-net-conf] is necesasry in order to communicate with the robot.
 
 > **NOTICE:**
 > The scripts modify several system parameters; it is recommend to examine the script and comment out any unnecessary parts.
 
-The [`sysconf.bash`][sysconf-sh] script installs essential packages, necessary libraries (`ros-melodic`, `libfranka`, `franka_ros`) etc. It creates a `catkin` workspace, configures the network for robot connection and modifies system parameters (deletes packages / disables daemons) to optimize the system performance.
+The [`setup-essential.bash`][script-ess] script installs any essential packages. The [`setup-ros.bash`][script-ros] installs `ROS` as well installs the dependency manger `rosdep` and and initializes it. These scripts must be run first, otherwise dependecy issues might arise.
 
 > **NOTICE:**
-> The RT-kernel does NOT support NVIDIA driver binaries; the default nouveau drivers might pose some issues.
+> The RT kernel does NOT support NVIDIA driver binaries; the default nouveau drivers might pose some issues.
 
-The [`rtkernel.bash`][rt-kernel-sh] script downloads, configures, compiles, and installs the realtime kernel; the script includes a [guide][rt-kernel-guide] on how to configure the kernel using a graphical interface.
+The [`setup-rt.bash`][script-rt] script downloads, configures, compiles, and installs the real time kernel; the script includes a [guide][rt-kernel-guide] on how to configure the kernel using a graphical interface.
 
-### Test
+Once the system is configured, this repository can be cloned (typically `~/Desktop/hric-system`). From within the source directory of the catkin workspace (e.g., `~/Desktop/hric-system/ws`), the following command will automatically install any missing catkin dependecies
 
-An [advanced network performance analysis][comm-test] can be performed using the `communication_test` example from `libfranka/build/examples/`. The provided scripts should configure the system such that when running on a RT kernel, the test  should be greater or equal to a success rate of `0.95`.
+```bash
+rosdep install --from-paths src --ignore-src -r -y
+```
 
-### API & Troubleshooting
+The project can then be built by issuing the command (optionally specifying a custom libfranka build):
 
-All necessary documentation is available in the [wiki] of this repository.
+```bash
+catkin_make -DCMAKE_BUILD_TYPE=Release -DFranka_DIR:PATH=~/Desktop/libfranka/build
+```
 
-## Versioning
+Furthermore, the [`setup-opensim.bash`][script-opensim] script downloads and compiles the OpenSim library; the installed location must then be specified in the CMake files of where the OpenSim library is used (e.g., `urdf_to_osim` package).
 
-We use [SemVer][semver] for versioning. For the versions available, see the [releases on this repository][releases]. Furthermore, this [changelog] documents the most relevant changes.
+### Usage
 
-## License
+In order for `roslaunch` and `rosrun` to be able to locate the contents of the workspace whenever a new terminal window, it must be sourced by issuing the `source devel/setup.bash` command from the workspace directory. This command can also be added to the `~/.bashrc` file.
 
-No license has been decided yet.
+An [advanced network performance analysis][franka-comm-test] can be performed using the `communication_test` example from `libfranka/build/examples/`. The provided scripts should configure the system such that when running on a RT kernel, the test  should be greater or equal to a success rate of `0.95`.
 
-## Acknowledgments
+The simulated environment with a trajectory controler can be launched using `roslaunch franka_sim_controllers joint_trajectory_control`, exposing a `ROS` interface for commanding a `trajectory_msgs/JointTrajectory` type setpoint at the `/panda_joint_trajectory_controller/command` topic.
 
-- [Erdal Perkel][erdal-git] - integration of Franka Emika Panda into Gazebo
+The real robot can be interfaced using any of the `franka_irl_controller` controller or using a controller from the (not provided) `franka_example_controllers` package (part of `franka_ros`).
+
+## Acknowledgements
+
+- [Cheng Fang][ref-cheng] - project supervisor for bachelor thesis.
+- [Daniel Tofte][ref-daniel] - comrade of the bachelor thesis, noble Corona warrior.
+- [Erdal Perkel][ref-erdal] - inspiration for integration of Franka Emika Panda into Gazebo.
+
+<!-- LINKS -->
+
+[thesis-pdf]: about:blank
+[img-workcell-setup]: /assets/media/img/workcell-setup.jpg
 
 [semver]: http://semver.org/
 [releases]: about:blank
 [changelog]: CHANGELOG.md
 [wiki]: about:blank
 
-[ros]: http://wiki.ros.org/melodic/
+[franka-docs]: https://frankaemika.github.io
+[franka-ros]: https://github.com/frankaemika/franka_ros
+[franka-net-conf]: https://frankaemika.github.io/docs/getting_started.html#setting-up-the-network
+[franka-comm-test]: https://frankaemika.github.io/docs/troubleshooting.html#advanced-network-performance-analysis
 [libfranka]: https://frankaemika.github.io/docs/libfranka.html
-[franka_ros]: https://github.com/frankaemika/franka_ros
+[ros]: http://wiki.ros.org/melodic/
 [gazebo]: http://gazebosim.org/
 [opensim]: http://simtk.org/projects/opensim
+[kdl]: https://www.orocos.org/kdl
+[eigen3]: eigen.tuxfamily.org/index.php
+[natnet]: https://optitrack.com/products/natnet-sdk/
 [lubuntu]: https://lubuntu.me/
-[franka-net-conf]: https://frankaemika.github.io/docs/getting_started.html#setting-up-the-network
-[sh-dir]: /scripts/
-[sysconf-sh]: /scripts/sysconf.bash
+[script-dir]: /assets/scripts/
+[script-ess]: /assets/scripts/setup-essential.bash
+[script-ros]: /assets/scripts/setup-ros.bash
+[script-rt]: /assets/scripts/setup-rt.bash
+[script-opensim]: /assets/scripts/setup-opensim.bash
 [rt-kernel]: https://index.ros.org/doc/ros2/Tutorials/Building-Realtime-rt_preempt-kernel-for-ROS-2/
-[rt-kernel-sh]: /scripts/rtkernel.bash
 [rt-kernel-guide]: https://hungpham2511.github.io/setup/install-rtlinux/
-[erdal-ros]: https://erdalpekel.de/?p=55
-[erdal-git]: https://github.com/erdalpekel
-[comm-test]: https://frankaemika.github.io/docs/troubleshooting.html#advanced-network-performance-analysis
+
+[ref-cheng]: https://scholar.google.com/citations?user=B3S4PyQAAAAJ
+[ref-daniel]: https://github.com/dscho15
+[ref-erdal]: https://github.com/erdalpekel
