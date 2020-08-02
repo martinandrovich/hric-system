@@ -15,11 +15,10 @@ To analyze human-robot interaction, the robot model is integrated into a biomech
 
 This reposity contains the `catkin` workspace used for the HRIC system, consisting of various packages.
 
-- `franka_ros` - integration of `libfranka` into `ROS`, enabling robot interfacing via `ros_control` framework.
 - `franka_description` - modified `URDF` robot descriptions with estimated dynamics parameters.
 - `franka_gazebo` - integration of Panda into `Gazebo` along with emulation of joint space robot dynamics.
 - `franka_sim_controllers` - various controllers to be used in the simulated environment.
-- `franka_irl_controller` - various controllers to be used in the real environment.
+- `franka_irl_controllers` - various controllers to be used in the real environment.
 - `urdf_to_osim` - automated transformation of URDF model to OSIM model.
 - `mocap_sampler` - sampling of the OptiTrack MOCAP system using NatNet SDK.
 
@@ -29,7 +28,7 @@ This project heavily relies on the Robot Operating System (ROS) framework accomp
 
 - [`ROS`][ros] - robotics middleware.
 - [`libfranka`][libfranka] - C++ interface for Franka Control Interface.
-- [`franka_ros`][franka-ros] - metapackage that integrates libfranka into ROS and ROS control.
+- [`franka_ros`][franka-ros] - metapackage that integrates libfranka into `ROS` and `ros_control`.
 - [`Gazebo`][gazebo] - robot simulation environment.
 - [`OpenSim 4.1`][opensim] - biomechanical simulation environment.
 - [`KDL`][kdl] - rigid-body dynamics library.
@@ -99,7 +98,7 @@ The real robot can be interfaced using any of the `franka_irl_controller` contro
 
 <!-- LINKS -->
 
-[thesis-pdf]: /docs/bachelor-thesis.pfg
+[thesis-pdf]: /docs/bachelor-thesis.pdf
 [img-workcell-setup]: /assets/media/img/workcell-setup.jpg
 
 [semver]: http://semver.org/
