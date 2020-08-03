@@ -98,7 +98,7 @@ The real robot can be interfaced using any of the `franka_irl_controller` contro
 
 <!-- LINKS -->
 
-[thesis-pdf]: /docs/bachelor-thesis.pdf
+[thesis-pdf]: /docs/bachelor-thesis-marta16.pdf
 [img-workcell-setup]: /assets/media/img/workcell-setup.jpg
 
 [semver]: http://semver.org/
