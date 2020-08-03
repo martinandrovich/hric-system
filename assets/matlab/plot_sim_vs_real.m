@@ -47,7 +47,7 @@ save_figure("../media/img/sim-vs-real-q5-tau-des");
 figure('Renderer', 'painters', 'Position', [10 10 1000 800])
 box on
 tiled_plot = tiledlayout(4,2)
-title(tiled_plot, "Joint Positions: Simulation vs. Real")
+title(tiled_plot, "Joint Position Trajectories: Simulation vs. Real")
 xlabel(tiled_plot,"Time [s]")
 ylabel(tiled_plot,"Position [rad]")
 tiled_plot.TileSpacing = "compact";

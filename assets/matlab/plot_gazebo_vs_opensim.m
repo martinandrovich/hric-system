@@ -4,8 +4,8 @@ clc; clear; close all;
 set(0, "DefaultFigureRenderer", "painters");
 
 % load CSV data (first row is header)
-data_gazebo  = csvread("pd-test-gazebo-nolim-nokdl.csv", 1, 0);
-data_opensim = csvread("pd-test-opensim.csv", 1, 0);
+data_gazebo  = csvread("../data/pd-test-gazebo-nolim-nokdl.csv", 1, 0);
+data_opensim = csvread("../data/pd-test-opensim.csv", 1, 0);
 
 % time example
 figure()
@@ -14,7 +14,7 @@ xlim([3800 4000])
 title("OpenSim time steps")
 xlabel("Time step")
 ylabel("Time [s]")
-save_figure("img/opensim-timestep");
+save_figure("../media/img/opensim-timestep");
 
 % fix OpenSim data (time nonlinearity)
 data_opensim = fix_data(data_opensim(12:13000, :));
@@ -35,58 +35,58 @@ close all;
 figure('Renderer', 'painters', 'Position', [10 10 1000 800])
 box on
 tiled_plot = tiledlayout(4,2)
-title(tiled_plot, "Joint Positions: Gazebo vs. OpenSim")
+title(tiled_plot, "Joint Position Trajectories: Gazebo vs. OpenSim")
 xlabel(tiled_plot,"Time [s]")
 ylabel(tiled_plot,"Position [rad]")
 tiled_plot.TileSpacing = "compact";
 tiled_plot.Padding = "compact";
 
 nexttile
-title("Joint 1 (q0)")
+title("Joint 1")
 hold on, box on
 plot(data_gazebo(:, 1), data_gazebo(:, 2))
 plot(data_opensim(:, 1), data_opensim(:, 2))
 
 nexttile
-title("Joint 2 (q1)")
+title("Joint 2")
 hold on, box on
 plot(data_gazebo(:, 1), data_gazebo(:, 3))
 plot(data_opensim(:, 1), data_opensim(:, 3))
 lgnd = legend("Gazebo", "OpenSim");
 
 nexttile
-title("Joint 3 (q2)")
+title("Joint 3")
 hold on, box on
 plot(data_gazebo(:, 1), data_gazebo(:, 4))
 plot(data_opensim(:, 1), data_opensim(:, 4))
 
 nexttile
-title("Joint 4 (q3)")
+title("Joint 4")
 hold on, box on
 plot(data_gazebo(:, 1), data_gazebo(:, 5))
 plot(data_opensim(:, 1), data_opensim(:, 5))
 
 nexttile
-title("Joint 5 (q4)")
+title("Joint 5")
 hold on, box on
 plot(data_gazebo(:, 1), data_gazebo(:, 6))
 plot(data_opensim(:, 1), data_opensim(:, 6))
 
 nexttile
-title("Joint 6 (q5)")
+title("Joint 6")
 hold on, box on
 plot(data_gazebo(:, 1), data_gazebo(:, 7))
 plot(data_opensim(:, 1), data_opensim(:, 7))
 
 nexttile
-title("Joint 7 (q6)")
+title("Joint 7")
 hold on, box on
 plot(data_gazebo(:, 1), data_gazebo(:, 8))
 plot(data_opensim(:, 1), data_opensim(:, 8))
 
 set(gcf, 'PaperPosition', [0 0 10 8]);
 set(gcf, 'PaperSize', [10 8]);
-saveas(gcf, "img/gazebo-vs-opensim-pos", "pdf");
+saveas(gcf, "../media/img/gazebo-vs-opensim-pos", "pdf");
 
 %%
 
