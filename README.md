@@ -15,12 +15,12 @@ To analyze human-robot interaction, the robot model is integrated into a biomech
 
 This reposity contains the `catkin` workspace used for the HRIC system, consisting of various packages.
 
-- `franka_description` - modified `URDF` robot descriptions with estimated dynamics parameters.
-- `franka_gazebo` - integration of Panda into `Gazebo` along with emulation of joint space robot dynamics.
-- `franka_sim_controllers` - various controllers to be used in the simulated environment.
-- `franka_irl_controllers` - various controllers to be used in the real environment.
-- `urdf_to_osim` - automated transformation of URDF model to OSIM model.
-- `mocap_sampler` - sampling of the OptiTrack MOCAP system using NatNet SDK.
+- [`franka_description`][pkg-franka-desc] - modified `URDF` robot descriptions with estimated dynamics parameters.
+- [`franka_gazebo`][pkg-franka-gazebo] - integration of Panda into `Gazebo` along with emulation of joint space robot dynamics.
+- [`franka_sim_controllers`][pkg-franka-sim] - various controllers to be used in the simulated environment.
+- [`franka_irl_controllers`][pkg-franka-irl] - various controllers to be used in the real environment.
+- [`urdf_to_osim`][pkg-urdf-to-osim] - automated transformation of URDF model to OSIM model.
+- [`mocap_sampler`][pkg-mocap] - sampling of the OptiTrack MOCAP system using NatNet SDK.
 
 ### Dependencies
 
@@ -105,6 +105,13 @@ The real robot can be interfaced using any of the `franka_irl_controller` contro
 [releases]: about:blank
 [changelog]: CHANGELOG.md
 [wiki]: about:blank
+
+[pkg-franka-desc]: /ws/src/franka_description
+[pkg-franka-gazebo]: /ws/src/franka_gazebo
+[pkg-franka-sim]: /ws/src/franka_sim_controllers
+[pkg-franka-irl]: /ws/src/franka_irl_controllers
+[pkg-urdf-to-osim]: /ws/src/urdf_to_osim
+[pkg-mocap]: /ws/src/mocap_sampler
 
 [franka-docs]: https://frankaemika.github.io
 [franka-ros]: https://github.com/frankaemika/franka_ros
