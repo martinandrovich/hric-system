@@ -3,7 +3,9 @@
 
 For research in safety of Human-Robot Interaction and Collaboration (HRIC), an integrated simulation environment is setup, facilitating the means of real time robot interfacing and collection of sensory data, furthermore providing a generic framework for development and deployment of an arbitrary robot controller in both a simulated and real environment.
 
-![workcell-setup][img-workcell-setup]
+| ![Illustration of HRIC workcell and its components.][img-workcell-setup]|
+| :----------------------------------------------------------: |
+| *Illustration of HRIC workcell and its components. Images from [OptiTrack](https://optitrack.com) and [Franka](https://www.franka.de).*  |
 
 Using the workcell in SDU Industry 4.0 lab, equipped with a Franka Emika Panda robot and various perceptual sensory equipment (e.g., motion capture system, EMG sensors etc.), the Robot Operating System (ROS) middleware is used as the underlying framework of the software architecture, in which the development of the generic controller framework is be accommodated by ROS Control and Franka ROS, using Gazebo as the simulation environment.
 
